@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  api:
+    image: ${REGISTRY-ketopal}/api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/KetoPal.Api/Dockerfile
