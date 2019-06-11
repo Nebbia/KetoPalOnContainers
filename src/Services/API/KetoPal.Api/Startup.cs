@@ -28,6 +28,7 @@ namespace KetoPal.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IProductsProvider>(x => new ProductsProvider(Configuration.GetSection("ConnectionStrings")["FoodDb"]));
+            services.AddTransient<IUsersProvider, InMemoryUsersProvider>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

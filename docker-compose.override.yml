@@ -28,6 +28,13 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
+  api.data:
+    environment: 
+      - "SA_PASSWORD=#newPass1"
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+
   gateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -38,6 +45,4 @@ services:
       - "44320:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-    depends_on:
-      - api
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro  

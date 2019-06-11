@@ -17,9 +17,16 @@ services:
     build:
       context: .
       dockerfile: src/Services/API/KetoPal.Api/Dockerfile
+    depends_on:
+      - api.data
+
+  api.data:
+    image: fgauna12/fooddb
 
   gateway:
     image: ${REGISTRY-ketopal}/gateway:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Gateways/KetoPal.Gateway/Dockerfile
+    depends_on:
+      - api
