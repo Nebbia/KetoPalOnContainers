@@ -1,0 +1,13 @@
+{{- $name := include "ketopal-identity.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "ketopal-identity.name" . }}
+    chart: {{ template "ketopal-identity.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+    all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"

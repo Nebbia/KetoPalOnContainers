@@ -6,6 +6,7 @@ trigger:
     include:
       - src/Services/API/*
       - k8s/charts/ketopal-api/*
+pr: none
 
 resources:
 - repo: self
