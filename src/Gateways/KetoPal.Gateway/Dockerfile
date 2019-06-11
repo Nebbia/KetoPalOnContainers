@@ -8,17 +8,17 @@ COPY ["./src", "./src"]
 COPY ["./tests", "./tests"]
 COPY . .
 RUN dotnet restore "KetoPal.sln"
-WORKDIR "/build/src/Services/API/KetoPal.Api"
-RUN dotnet build "KetoPal.Api.csproj" -c Release -o /app
+WORKDIR "/build/src/Services/API/KetoPal.Gateway"
+RUN dotnet build "KetoPal.Gateway.csproj" -c Release -o /app
 
 FROM build as tests
 WORKDIR /build
 RUN dotnet test "KetoPal.sln"
 
 FROM build AS publish
-RUN dotnet publish "KetoPal.Api.csproj" -c Release -o /app
+RUN dotnet publish "KetoPal.Gateway.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "KetoPal.Api.dll"]
+ENTRYPOINT ["dotnet", "KetoPal.Gateway.dll"]

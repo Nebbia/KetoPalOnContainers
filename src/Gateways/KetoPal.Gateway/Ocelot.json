@@ -1,0 +1,20 @@
+﻿{
+  "ReRoutes": [
+    {
+      "UpstreamPathTemplate": "/v1/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "api",
+          "Port": 80
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "AdministrationPath": "/administration",
+    "RequestIdKey": "GatewayRequestId"
+  }
+}
