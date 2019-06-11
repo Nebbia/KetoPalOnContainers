@@ -1,0 +1,58 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+      - src/*
+      - k8s/*
+
+resources:
+- repo: self
+
+variables: 
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build and Publish Stage
+  jobs:  
+  - job: Build
+    displayName: Build and Publish
+    pool: $(pool)
+    steps:
+    - task: DockerCompose@0
+      displayName: "Build using Docker Compose"
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'NebbiaRegistry'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Build services'
+        includeSourceTags: true
+        includeLatestTag: true
+        additionalImageTags: '$(Build.BuildNumber)'
+    - task: DockerCompose@0
+      displayName: "Publish using Docker Compose"
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'NebbiaRegistry'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Push services'
+        includeSourceTags: true
+        includeLatestTag: true
+        additionalImageTags: '$(Build.BuildNumber)'
+    - task: CopyFiles@2
+      displayName: "Copy Helm Charts"
+      inputs: 
+        SourceFolder: './src/k8s/charts'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactsStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Build Artifacts"
+      inputs: 
+        ArtifactName: 'helm'
+        PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
