@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using IdentityServer4.EntityFramework.DbContexts;
+using KetoPal.Identity.Data;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +25,26 @@ namespace KetoPal.Identity
             try
             {
                 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-                var host = BuildWebHost(configuration, args);
+                var host = BuildWebHost(args);
+
+                Log.Information("Applying migrations ({ApplicationContext})...", AppName);
+                host.MigrateDbContext<PersistedGrantDbContext>((_, __) => { })
+                    .MigrateDbContext<ApplicationDbContext>((context, services) =>
+                    {
+                        var env = services.GetService<IHostingEnvironment>();
+                        var logger = services.GetService<ILogger<ApplicationDbContextSeed>>();
+                        var settings = services.GetService<IOptions<AppSettings>>();
+
+                        new ApplicationDbContextSeed()
+                            .SeedAsync(context, env, logger, settings)
+                            .Wait();
+                    })
+                    .MigrateDbContext<ConfigurationDbContext>((context, services) =>
+                    {
+                        new ConfigurationDbContextSeed()
+                            .SeedAsync(context, configuration)
+                            .Wait();
+                    });
 
                 Log.Information("Starting web host ({ApplicationContext})...", AppName);
                 host.Run();
@@ -39,15 +60,24 @@ namespace KetoPal.Identity
                 Log.CloseAndFlush();
             }
         }
-     
-        private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
+
+        //private protected static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
+        //    WebHost.CreateDefaultBuilder(args)
+        //    .CaptureStartupErrors(false)
+        //    .UseStartup<Startup>()
+        //    .UseContentRoot(Directory.GetCurrentDirectory())
+        //    .UseConfiguration(configuration)
+        //    .UseSerilog()
+        //    .Build();
+
+        public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .CaptureStartupErrors(false)
-            .UseStartup<Startup>()
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseConfiguration(configuration)
-            .UseSerilog()
-            .Build();
+                .CaptureStartupErrors(false)
+                .UseStartup<Startup>()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseConfiguration(GetConfiguration())
+                .UseSerilog()
+                .Build();
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {

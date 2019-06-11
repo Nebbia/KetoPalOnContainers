@@ -1,15 +1,9 @@
-resources:
-  repositories:
-  - repository: KetoPalOnContainers
-    type: GitHub
-    connection: NebbiaGithub
-    source: Nebbia/KetoPalOnContainers
-    pr:
-      branches:
-      - master
-      paths:
-        include:
-        - src/Services/API/*
+pr:
+  branches:
+  - master
+  paths:
+    include:
+    - src/Services/API/*
 
 pool:
   vmImage: windows-2019
