@@ -28,8 +28,9 @@ stages:
     - task: DockerCompose@0
       displayName: "Build using Docker Compose"
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'NebbiaPartner'
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: 'NebbiaPartner'
+        azureContainerRegistry: '{"loginServer":"nebbiaregistry.azurecr.io", "id" : "/subscriptions/1979771a-9163-4750-8947-e6dbe596a8d7/resourceGroups/shared-nebbia-rg/providers/Microsoft.ContainerRegistry/registries/nebbiaregistry"}'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Build services'
         includeSourceTags: true
@@ -38,8 +39,9 @@ stages:
     - task: DockerCompose@0
       displayName: "Publish using Docker Compose"
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'NebbiaPartner'
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: 'NebbiaPartner'
+        azureContainerRegistry: '{"loginServer":"nebbiaregistry.azurecr.io", "id" : "/subscriptions/1979771a-9163-4750-8947-e6dbe596a8d7/resourceGroups/shared-nebbia-rg/providers/Microsoft.ContainerRegistry/registries/nebbiaregistry"}'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Push services'
         includeSourceTags: true
@@ -56,4 +58,3 @@ stages:
       inputs: 
         ArtifactName: 'helm'
         PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
-    
