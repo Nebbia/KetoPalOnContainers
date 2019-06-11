@@ -1,0 +1,20 @@
+﻿{
+  "ReRoutes": [
+    {
+      "UpstreamPathTemplate": "/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "google.com",
+          "Port": 443
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://api.mybusiness.com",
+    "RequestIdKey": "GatewayRequestId"
+  }
+}

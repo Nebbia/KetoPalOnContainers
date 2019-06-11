@@ -17,3 +17,9 @@ services:
     build:
       context: .
       dockerfile: src/Services/API/KetoPal.Api/Dockerfile
+
+  gateway:
+    image: ${REGISTRY-ketopal}/gateway:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Gateways/KetoPal.Gateway/Dockerfile
