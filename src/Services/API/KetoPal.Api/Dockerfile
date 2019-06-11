@@ -5,7 +5,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /build
 COPY ["./src", "./src"]
-COPY ["./tests", "./tests"]
+COPY ["./test", "./test"]
 COPY . .
 RUN dotnet restore "KetoPal.sln"
 WORKDIR "/build/src/Services/API/KetoPal.Api"
