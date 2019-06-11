@@ -29,7 +29,7 @@ stages:
       displayName: "Build using Docker Compose"
       inputs:
         containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'NebbiaRegistry'
+        dockerRegistryEndpoint: 'NebbiaPartner'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Build services'
         includeSourceTags: true
@@ -39,7 +39,7 @@ stages:
       displayName: "Publish using Docker Compose"
       inputs:
         containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'NebbiaRegistry'
+        dockerRegistryEndpoint: 'NebbiaPartner'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Push services'
         includeSourceTags: true
@@ -56,3 +56,4 @@ stages:
       inputs: 
         ArtifactName: 'helm'
         PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
+    
