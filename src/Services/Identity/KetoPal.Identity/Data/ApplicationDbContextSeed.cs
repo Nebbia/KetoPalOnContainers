@@ -62,7 +62,8 @@ namespace KetoPal.Identity.Data
             {
                 Email = column[Array.IndexOf(headers, "email")].Trim('"').Trim(),
                 Id = Guid.NewGuid().ToString(),
-                Name = column[Array.IndexOf(headers, "name")].Trim('"').Trim(),
+                FirstName = column[Array.IndexOf(headers, "firstname")].Trim('"').Trim(),
+                LastName = column[Array.IndexOf(headers, "lastname")].Trim('"').Trim(),
                 PhoneNumber = column[Array.IndexOf(headers, "phonenumber")].Trim('"').Trim(),
                 UserName = column[Array.IndexOf(headers, "username")].Trim('"').Trim(),
                 NormalizedEmail = column[Array.IndexOf(headers, "normalizedemail")].Trim('"').Trim(),
@@ -88,7 +89,7 @@ namespace KetoPal.Identity.Data
             try
             {
                 string[] requiredHeaders = {
-                    "email", "name", "phonenumber",
+                    "email", "firstname","lastname", "phonenumber",
                     "username","normalizedemail", "normalizedusername", "password"
                 };
                 csvheaders = GetHeaders(requiredHeaders, csvFileUsers);
@@ -117,7 +118,8 @@ namespace KetoPal.Identity.Data
                 {
                     Email = "demouser@microsoft.com",
                     Id = Guid.NewGuid().ToString(),
-                    Name = "DemoUser",
+                    FirstName = "Demo",
+                    LastName = "User",
                     PhoneNumber = "1234567890",
                     UserName = "demouser@microsoft.com",
                     NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
