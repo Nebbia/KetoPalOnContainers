@@ -17,6 +17,7 @@ variables:
   #                          Mandatory variables 
   # ========================================================================
   Azure.ServiceConnectionId: 'NebbiaPartner'
+  AKS.ServiceConnectionId: 'prod-prod-nebbia-aks-ketopal-1560279773186'
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-identity
   Service.Name: identity
@@ -103,3 +104,17 @@ stages:
       inputs: 
         ArtifactName: 'helm'
         PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
+
+- stage: Production
+  jobs:
+  - template: jobs/regionDeploy.yml
+    parameters:
+      azureSubscription: $(Azure.ServiceConnectionId)
+      aksConnection: $(AKS.ServiceConnectionId)
+      acrName: $(ACR.RepositoryName)
+      chartName: $(Chart.Name)
+      deployment: 'deployEastUS'
+      deploymentDisplayName: 'Deploy Identity East US'
+      releaseName: identity.api
+      pool: 'ubuntu-16.04'
+      env: prod.ketopal
