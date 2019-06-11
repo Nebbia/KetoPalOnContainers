@@ -3,12 +3,15 @@
 
 
 using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
 
 namespace KetoPal.Identity.Configuration
 {
     public static class Config
     {
+        // Identity resources are data like user ID, name, or email address of a user
+        // see: http://docs.identityserver.io/en/release/configuration/resources.html
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new IdentityResource[]
@@ -18,6 +21,7 @@ namespace KetoPal.Identity.Configuration
             };
         }
 
+        // ApiResources define the apis in your system
         public static IEnumerable<ApiResource> GetApis()
         {
             return new ApiResource[]
@@ -25,7 +29,7 @@ namespace KetoPal.Identity.Configuration
                 new ApiResource("api1", "My API #1")
             };
         }
-
+        // client want to access resources (aka scopes)
         public static IEnumerable<Client> GetClients()
         {
             return new[]
@@ -83,6 +87,11 @@ namespace KetoPal.Identity.Configuration
                     AllowedScopes = { "openid", "profile", "api1" }
                 }
             };
+        }
+
+        internal static IEnumerable<object> GetResources()
+        {
+            throw new NotImplementedException();
         }
     }
 }

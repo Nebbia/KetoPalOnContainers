@@ -5,10 +5,10 @@ services:
     image: microsoft/mssql-server-linux:2017-latest
 
   identity:
-    image: ${REGISTRY:-ketopal}/identity:${TAG:-latest}
+    image: ${REGISTRY:-ketopal}/identity:${PLATFORM:-linux}-${TAG:-latest}
     build: 
       context: .
-      dockerfile: src/KetoPal.Identity/Dockerfile
+      dockerfile: src/Services/Identity/KetoPal.Identity/Dockerfile
     depends_on: 
       - sql.data 
 
@@ -16,4 +16,4 @@ services:
     image: ${REGISTRY-ketopal}/api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
-      dockerfile: src/KetoPal.Api/Dockerfile
+      dockerfile: src/Services/API/KetoPal.Api/Dockerfile

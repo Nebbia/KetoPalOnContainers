@@ -1,0 +1,102 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+      - src/Services/API/*
+      - k8s/charts/ketopal-api/*
+
+resources:
+- repo: self
+
+variables:
+  # ========================================================================
+  #                          Mandatory variables 
+  # ========================================================================
+  Azure.ServiceConnectionId: 'NebbiaPartner'
+  ACR.Name: nebbiaregistry
+  Chart.Name: ketopal-api
+  Service.Name: api
+  # ========================================================================
+  #                           Optional variables 
+  # ========================================================================
+  ACR.RepositoryName: '$(ACR.Name)'
+  ACR.ImageName: '$(ACR.Name):$(Build.BuildId)'
+  ACR.FullName: '$(ACR.Name).azurecr.io'
+  System.Debug: 'false'
+
+stages:
+- stage: Build
+  displayName: Build and Publish Stage
+  jobs:  
+  - job: Build
+    displayName: Build and Publish
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: DockerCompose@0
+      displayName: "Build using Docker Compose"
+      inputs:
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
+        azureContainerRegistry: $(ACR.FullName)
+        dockerComposeFile: docker-compose.yml
+        dockerComposeCommand: 'build $(Service.Name)'
+        includeSourceTags: true
+        includeLatestTag: true
+        additionalImageTags: '$(Build.BuildNumber)'
+
+    - task: DockerCompose@0
+      displayName: "Publish using Docker Compose"
+      inputs:
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
+        azureContainerRegistry: $(ACR.FullName)
+        dockerComposeFile: docker-compose.yml
+        dockerComposeCommand: 'push $(Service.Name)'
+        includeSourceTags: true
+        includeLatestTag: true
+        additionalImageTags: '$(Build.BuildNumber)'
+
+    - task: HelmInstaller@1
+      displayName: Helm installer
+      inputs: 
+        helmVersionToInstall: latest
+
+    - task: HelmDeploy@0
+      displayName: 'Init Helm Client'
+      inputs:
+        connectionType: None
+        command: init
+        arguments: '--client-only'
+
+    - task: HelmDeploy@0
+      displayName: 'Package Helm Charts'
+      inputs:
+        connectionType: None
+        command: package
+        chartPath: 'k8s/charts/$(Chart.Name)'
+        chartVersion: '$(Build.BuildId)'
+        destination: $(Build.ArtifactStagingDirectory)
+        updateDependency: true
+
+    - task: AzureCLI@1
+      displayName: 'Push helm chart'
+      inputs:
+        azureSubscription: $(Azure.ServiceConnectionId)
+        scriptLocation: inlineScript
+        inlineScript: 'az acr helm push -n $(ACR.RepositoryName) $(Build.ArtifactStagingDirectory)/$(Chart.Name)-$(Build.BuildId).tgz'
+        conditions: and(succeeded(), eq(variables['Build.SourceBranch'],'refs/heads/master'))
+        
+    - task: CopyFiles@2
+      displayName: "Copy Helm Charts"
+      inputs: 
+        SourceFolder: './src/k8s/charts'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactsStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Build Artifacts"
+      inputs: 
+        ArtifactName: 'helm'
+        PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
