@@ -1,0 +1,47 @@
+resources:
+  repositories:
+  - repository: KetoPalOnContainers
+    type: GitHub
+    connection: NebbiaGithub
+    source: Nebbia/KetoPalOnContainers
+    pr:
+      branches:
+      - master
+      paths:
+        include:
+        - src/Services/Identity/*
+
+pool:
+  vmImage: windows-2019
+
+variables: 
+  buildConfiguration: 'Release'
+  
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration Release'
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+- task: HelmInstaller@1
+  displayName: Helm installer
+  inputs: 
+    helmVersionToInstall: latest
+
+- task: HelmDeploy@0
+  displayName: 'Init Helm Client'
+  inputs:
+    connectionType: None
+    command: init
+    arguments: '--client-only'
+
+- script: helm lint ./k8s/charts/ketopal-identity
+  displayName: Lint Helm Chart

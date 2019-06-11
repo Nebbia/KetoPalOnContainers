@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\KetoPal.Api\KetoPal.Api.csproj" />
-    <ProjectReference Include="..\..\src\KetoPal.Core\KetoPal.Core.csproj" />
-    <ProjectReference Include="..\..\src\KetoPal.Infrastructure\KetoPal.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Services\API\KetoPal.Api\KetoPal.Api.csproj" />
   </ItemGroup>
 
 </Project>
