@@ -11,3 +11,9 @@ services:
       dockerfile: src/KetoPal.Identity/Dockerfile
     depends_on: 
       - sql.data 
+
+  api:
+    image: ${REGISTRY-ketopal}/api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/KetoPal.Api/Dockerfile

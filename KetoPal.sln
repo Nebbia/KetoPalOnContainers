@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.Tests", "test\KetoP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.SlowTests", "test\KetoPal.SlowTests\KetoPal.SlowTests.csproj", "{E9235A8A-9638-45AE-97F3-CE734E66DBC3}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FEA0C318-FFED-4D39-8781-265718CA43DD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.Identity", "src\Services\Identity\KetoPal.Identity\KetoPal.Identity.csproj", "{26DE62FB-3F27-4E84-A014-DD8E033976EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A47CCC42-37CD-4A71-BA59-71BE183E6594}"
@@ -26,6 +24,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{4FEE9740-E0F0-4EF1-9C27-AC201B44023C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{BF78EC12-BC6B-421C-A02F-E95031916B78}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,18 +97,21 @@ Global
 		{E9235A8A-9638-45AE-97F3-CE734E66DBC3}.Release|x64.Build.0 = Release|Any CPU
 		{E9235A8A-9638-45AE-97F3-CE734E66DBC3}.Release|x86.ActiveCfg = Release|Any CPU
 		{E9235A8A-9638-45AE-97F3-CE734E66DBC3}.Release|x86.Build.0 = Release|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x64.Build.0 = Debug|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x86.Build.0 = Debug|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x64.ActiveCfg = Release|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x64.Build.0 = Release|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x86.ActiveCfg = Release|Any CPU
-		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x86.Build.0 = Release|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Debug|x64.Build.0 = Debug|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Debug|x86.Build.0 = Debug|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Release|x64.ActiveCfg = Release|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Release|x64.Build.0 = Release|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{D42233C0-025B-43CE-9DC5-C1C56E9D52AD}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -138,5 +141,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0595AA26-33B9-4EE0-ABA1-56C91C8497A2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2EC9B83D-CF93-4509-8FD5-44A5D6B08F35}
 	EndGlobalSection
 EndGlobal
