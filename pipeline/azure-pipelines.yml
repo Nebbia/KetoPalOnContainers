@@ -23,7 +23,6 @@ stages:
   jobs:  
   - job: Build
     displayName: Build and Publish
-    pool: $(pool)
     steps:
     - task: DockerCompose@0
       displayName: "Build using Docker Compose"
