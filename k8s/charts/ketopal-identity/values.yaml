@@ -75,6 +75,8 @@ inf:
     keystore:
       svc: keystore-data
       constr: keystore-data
+  registry:
+    server: nebbiaregistry.azurecr.io
 probes:
   liveness:
     path: /liveness

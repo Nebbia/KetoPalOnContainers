@@ -1,0 +1,55 @@
+parameters:
+  azureSubscription: ''
+  aksConnection: ''
+  acrName: ''
+  chartName: ''
+  deployment: ''
+  deploymentDisplayName: ''
+  releaseName: ''
+  pool: ''
+  env: ''
+
+jobs:
+- deployment: ${{ parameters.deployment }}
+  displayName: ${{ parameters.deploymentDisplayName }}
+  pool:
+    vmImage: ${{ parameters.pool }}
+  environment: ${{ parameters.env }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: HelmInstaller@1
+          displayName: Helm installer
+          inputs: 
+            helmVersionToInstall: latest
+        - task: HelmDeploy@0
+          displayName: 'helm init'
+          inputs:
+            connectionType: 'Kubernetes Service Connection'
+            kubernetesServiceConnection: ${{ parameters.aksConnection }}
+            namespace: 'ketopal'
+            command: init
+            arguments: |
+              --service-account tiller
+            tillerNamespace: 'ketopal'
+        
+        - task: AzureCLI@1
+          displayName: 'Connect to ACR Helm Repo'
+          inputs:
+            azureSubscription: ${{ parameters.azureSubscription }}
+            scriptLocation: inlineScript
+            inlineScript: 'az acr helm repo add -n ${{ parameters.acrName }}'
+
+        - task: HelmDeploy@0
+          displayName: Helm deploy
+          inputs:
+            connectionType: 'Kubernetes Service Connection'
+            kubernetesServiceConnection: ${{ parameters.aksConnection }}
+            namespace: 'ketopal'
+            command: upgrade
+            chartType: Name
+            chartName: ${{ format('{0}/{1}', parameters.acrName, parameters.chartName) }}
+            releaseName: ${{parameters.releaseName}}
+            install: true
+            tillerNamespace: 'ketopal'
