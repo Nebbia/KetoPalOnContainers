@@ -5,8 +5,8 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>d42233c0-025b-43ce-9dc5-c1c56e9d52ad</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api/products</DockerServiceUrl>
-    <DockerServiceName>ketopal.api</DockerServiceName>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/v1/products</DockerServiceUrl>
+    <DockerServiceName>gateway</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
