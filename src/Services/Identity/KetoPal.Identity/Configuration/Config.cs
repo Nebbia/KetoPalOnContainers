@@ -12,12 +12,12 @@ namespace KetoPal.Identity.Configuration
     {
         // Identity resources are data like user ID, name, or email address of a user
         // see: http://docs.identityserver.io/en/release/configuration/resources.html
-        public static IEnumerable<IdentityResource> GetIdentityResources()
+        public static IEnumerable<IdentityResource> GetResources()
         {
-            return new IdentityResource[]
+            return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.Profile()
             };
         }
 
@@ -89,9 +89,5 @@ namespace KetoPal.Identity.Configuration
             };
         }
 
-        internal static IEnumerable<object> GetResources()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using KetoPal.Identity.Models;
+﻿using KetoPal.Identity.Extentions;
+using KetoPal.Identity.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -36,10 +37,6 @@ namespace KetoPal.Identity.Data
                     await context.SaveChangesAsync();
                 }
 
-                if (useCustomizationData)
-                {
-                    GetPreconfiguredImages(contentRootPath, webroot, logger);
-                }
             }
             catch (Exception ex)
             {

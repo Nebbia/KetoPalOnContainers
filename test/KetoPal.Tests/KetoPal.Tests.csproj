@@ -15,4 +15,9 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Services\API\KetoPal.Api\KetoPal.Api.csproj" />
+    <ProjectReference Include="..\..\src\Services\API\KetoPal.Core\KetoPal.Core.csproj" />
+  </ItemGroup>
+
 </Project>

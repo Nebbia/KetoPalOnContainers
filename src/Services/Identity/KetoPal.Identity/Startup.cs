@@ -50,6 +50,8 @@ namespace KetoPal.Identity
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<AppSettings>(Configuration);
+
             services.AddMvc()
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
@@ -169,7 +171,9 @@ namespace KetoPal.Identity
             
             app.UseStaticFiles();
             app.UseForwardedHeaders();
+            // Adds IdentityServer
             app.UseIdentityServer();
+
             app.UseHttpsRedirection();
             app.UseMvcWithDefaultRoute();
         }
