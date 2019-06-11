@@ -1,21 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{05A8E3F8-3B46-4E43-8147-425FFA1AB52E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetoPal.Api", "src\KetoPal.Api\KetoPal.Api.csproj", "{0648EBD5-8A93-43CC-A337-6FC8363BB6C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.Api", "src\KetoPal.Api\KetoPal.Api.csproj", "{0648EBD5-8A93-43CC-A337-6FC8363BB6C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetoPal.Core", "src\KetoPal.Core\KetoPal.Core.csproj", "{D5A3DFEF-6C89-4929-8482-AD9AE48D9306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.Core", "src\KetoPal.Core\KetoPal.Core.csproj", "{D5A3DFEF-6C89-4929-8482-AD9AE48D9306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetoPal.Infrastructure", "src\KetoPal.Infrastructure\KetoPal.Infrastructure.csproj", "{6D4B338E-ED0E-4B60-8680-B184A2352AD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.Infrastructure", "src\KetoPal.Infrastructure\KetoPal.Infrastructure.csproj", "{6D4B338E-ED0E-4B60-8680-B184A2352AD9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{67F09AB0-984F-4730-BC9C-9BC19325CF63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetoPal.Tests", "test\KetoPal.Tests\KetoPal.Tests.csproj", "{1A6D938D-6C4F-4BC1-B4CD-021FAA5AE317}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.Tests", "test\KetoPal.Tests\KetoPal.Tests.csproj", "{1A6D938D-6C4F-4BC1-B4CD-021FAA5AE317}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetoPal.SlowTests", "test\KetoPal.SlowTests\KetoPal.SlowTests.csproj", "{E9235A8A-9638-45AE-97F3-CE734E66DBC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.SlowTests", "test\KetoPal.SlowTests\KetoPal.SlowTests.csproj", "{E9235A8A-9638-45AE-97F3-CE734E66DBC3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FEA0C318-FFED-4D39-8781-265718CA43DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KetoPal.Identity", "src\Services\Identity\KetoPal.Identity\KetoPal.Identity.csproj", "{26DE62FB-3F27-4E84-A014-DD8E033976EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,9 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0648EBD5-8A93-43CC-A337-6FC8363BB6C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -90,6 +91,33 @@ Global
 		{E9235A8A-9638-45AE-97F3-CE734E66DBC3}.Release|x64.Build.0 = Release|Any CPU
 		{E9235A8A-9638-45AE-97F3-CE734E66DBC3}.Release|x86.ActiveCfg = Release|Any CPU
 		{E9235A8A-9638-45AE-97F3-CE734E66DBC3}.Release|x86.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x64.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Debug|x86.Build.0 = Debug|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x64.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x64.Build.0 = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x86.ActiveCfg = Release|Any CPU
+		{FEA0C318-FFED-4D39-8781-265718CA43DD}.Release|x86.Build.0 = Release|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|x64.Build.0 = Debug|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Debug|x86.Build.0 = Debug|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Release|x64.ActiveCfg = Release|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Release|x64.Build.0 = Release|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Release|x86.ActiveCfg = Release|Any CPU
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0648EBD5-8A93-43CC-A337-6FC8363BB6C2} = {05A8E3F8-3B46-4E43-8147-425FFA1AB52E}
@@ -97,5 +125,9 @@ Global
 		{6D4B338E-ED0E-4B60-8680-B184A2352AD9} = {05A8E3F8-3B46-4E43-8147-425FFA1AB52E}
 		{1A6D938D-6C4F-4BC1-B4CD-021FAA5AE317} = {67F09AB0-984F-4730-BC9C-9BC19325CF63}
 		{E9235A8A-9638-45AE-97F3-CE734E66DBC3} = {67F09AB0-984F-4730-BC9C-9BC19325CF63}
+		{26DE62FB-3F27-4E84-A014-DD8E033976EE} = {05A8E3F8-3B46-4E43-8147-425FFA1AB52E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0595AA26-33B9-4EE0-ABA1-56C91C8497A2}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest
+
+  identity:
+    image: ${REGISTRY:-ketopal}/identity:${TAG:-latest}
+    build: 
+      context: .
+      dockerfile: src/KetoPal.Identity/Dockerfile
+    depends_on: 
+      - sql.data 
