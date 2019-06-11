@@ -44,7 +44,6 @@ namespace KetoPal.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
