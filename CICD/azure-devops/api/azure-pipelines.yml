@@ -5,6 +5,7 @@ trigger:
   paths:
     include:
       - src/Services/API/*
+      - src/Gateways/*
       - k8s/charts/ketopal-api/*
 pr: none
 
@@ -18,7 +19,7 @@ variables:
   Azure.ServiceConnectionId: 'NebbiaPartner'
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-api
-  Service.Name: api
+  Service.Name: ketopal-api
   # ========================================================================
   #                           Optional variables 
   # ========================================================================
