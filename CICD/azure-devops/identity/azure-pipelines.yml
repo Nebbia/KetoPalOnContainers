@@ -4,6 +4,7 @@ trigger:
     - master
   paths:
     include:
+      - src/BuildingBlocks/*
       - src/Services/Identity/*
       - k8s/charts/ketopal-identity/*
 pr: none
@@ -96,7 +97,7 @@ stages:
         SourceFolder: './k8s/charts'
         Contents: '**'
         TargetFolder: '$(Build.ArtifactsStagingDirectory)'
-        
+
     - task: PublishBuildArtifacts@1
       displayName: "Publish Build Artifacts"
       inputs: 
