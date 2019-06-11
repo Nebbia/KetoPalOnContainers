@@ -3,6 +3,7 @@ pr:
   - master
   paths:
     include:
+    - src/BuildingBlocks/*
     - src/Services/Identity/*
 
 pool:
