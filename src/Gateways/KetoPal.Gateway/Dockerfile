@@ -5,15 +5,11 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /build
 COPY ["./src", "./src"]
-COPY ["./tests", "./tests"]
+COPY ["./test", "./test"]
 COPY . .
 RUN dotnet restore "KetoPal.sln"
-WORKDIR "/build/src/Services/API/KetoPal.Gateway"
+WORKDIR "/build/src/Gateways/KetoPal.Gateway"
 RUN dotnet build "KetoPal.Gateway.csproj" -c Release -o /app
-
-FROM build as tests
-WORKDIR /build
-RUN dotnet test "KetoPal.sln"
 
 FROM build AS publish
 RUN dotnet publish "KetoPal.Gateway.csproj" -c Release -o /app
