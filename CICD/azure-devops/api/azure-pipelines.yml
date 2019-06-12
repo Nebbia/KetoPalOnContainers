@@ -72,11 +72,10 @@ stages:
       inputs:
         command: buildAndPush
         containerRegistry: $(ACR.ContainerRegistryServiceConnnection)
-        repository: $(ACR.FullName)/ketopal/$(Service.Name)
+        repository: ketopal/$(Service.Name)
         buildContext: .
         Dockerfile: $(Service.Dockerfile)
-        tags: |
-          $(Build.BuildNumber)
+        tags: $(Build.BuildNumber)
 
     - task: HelmInstaller@1
       displayName: Helm installer
