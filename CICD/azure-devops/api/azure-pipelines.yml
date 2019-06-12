@@ -71,7 +71,7 @@ stages:
       displayName: Build and Push
       inputs:
         command: buildAndPush
-        containerRegistry: $(ContainerRegistryServiceConnnection)
+        containerRegistry: $(ACR.ContainerRegistryServiceConnnection)
         repository: $(ACR.FullName)/ketopal/$(Service.Name)
         Dockerfile: $(Service.Dockerfile)
         tags: |
