@@ -93,7 +93,7 @@ stages:
     - task: CopyFiles@2
       displayName: "Copy Helm Charts"
       inputs: 
-        SourceFolder: './src/k8s/charts'
+        SourceFolder: './k8s/charts'
         Contents: '**'
         TargetFolder: '$(Build.ArtifactsStagingDirectory)'
     - task: PublishBuildArtifacts@1
