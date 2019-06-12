@@ -17,6 +17,7 @@ variables:
   #                          Mandatory variables 
   # ========================================================================
   Azure.ServiceConnectionId: 'NebbiaPartner'
+  ACR.ContainerRegistryServiceConnnection: 'NebbiaRegistry'
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-api
   Service.Name: api
@@ -70,7 +71,7 @@ stages:
       displayName: Build and Push
       inputs:
         command: buildAndPush
-        containerRegistry: NebbiaRegistry
+        containerRegistry: $(ContainerRegistryServiceConnnection)
         repository: $(ACR.FullName)/ketopal/$(Service.Name)
         Dockerfile: $(Service.Dockerfile)
         tags: |
