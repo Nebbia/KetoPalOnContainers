@@ -95,7 +95,7 @@ stages:
 
 - stage: Production
   jobs:
-  - template: jobs/regionDeploy.yml
+  - template: ../jobs/regionDeploy.yml
     parameters:
       azureSubscription: $(Azure.ServiceConnectionId)
       aksConnection: $(AKS.ServiceConnectionId)

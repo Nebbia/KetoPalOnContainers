@@ -90,3 +90,16 @@ stages:
       inputs: 
         ArtifactName: 'helm'
         PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
+- stage: Production
+  jobs:
+  - template: ../jobs/regionDeploy.yml
+    parameters:
+      azureSubscription: $(Azure.ServiceConnectionId)
+      aksConnection: $(AKS.ServiceConnectionId)
+      acrName: $(ACR.RepositoryName)
+      chartName: $(Chart.Name)
+      deployment: 'deployEastUS'
+      deploymentDisplayName: 'Deploy API East US'
+      releaseName: angry-mongoose
+      pool: 'ubuntu-16.04'
+      env: prod.ketopal
