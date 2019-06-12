@@ -18,9 +18,11 @@ variables:
   # ========================================================================
   Azure.ServiceConnectionId: 'NebbiaPartner'
   AKS.ServiceConnectionId: 'prod-prod-nebbia-aks-ketopal-1560279773186'
+  ACR.ContainerRegistryServiceConnnection: 'NebbiaRegistry'
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-identity
   Service.Name: identity
+  Service.Dockerfile: src/Services/API/KetoPal.Api/Dockerfile
   # ========================================================================
   #                           Optional variables 
   # ========================================================================
@@ -38,29 +40,15 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: DockerCompose@0
-      displayName: "Build using Docker Compose"
+    - task: Docker@2
+      displayName: Build and Push
       inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
-        azureContainerRegistry: $(ACR.FullName)
-        dockerComposeFile: docker-compose.yml
-        dockerComposeCommand: 'build $(Service.Name)'
-        includeSourceTags: true
-        includeLatestTag: true
-        additionalImageTags: '$(Build.BuildNumber)'
-
-    - task: DockerCompose@0
-      displayName: "Publish using Docker Compose"
-      inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
-        azureContainerRegistry: $(ACR.FullName)
-        dockerComposeFile: docker-compose.yml
-        dockerComposeCommand: 'push $(Service.Name)'
-        includeSourceTags: true
-        includeLatestTag: true
-        additionalImageTags: '$(Build.BuildNumber)'
+        command: buildAndPush
+        containerRegistry: $(ACR.ContainerRegistryServiceConnnection)
+        repository: ketopal/$(Service.Name)
+        buildContext: .
+        Dockerfile: $(Service.Dockerfile)
+        tags: $(Build.BuildNumber)
 
     - task: HelmInstaller@1
       displayName: Helm installer
