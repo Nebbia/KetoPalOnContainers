@@ -13,7 +13,7 @@ RUN dotnet build "KetoPal.Api.csproj" -c Release -o /app
 
 FROM build as tests
 WORKDIR /build
-RUN dotnet test "KetoPal.sln"
+RUN dotnet test "test/KetoPal.Tests/KetoPal.Tests.csproj"
 
 FROM build AS publish
 RUN dotnet publish "KetoPal.Api.csproj" -c Release -o /app
