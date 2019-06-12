@@ -49,9 +49,10 @@ stages:
         includeLatestTag: true
 
     - task: Bash@3
+      displayName: "Tag Image using Bash"
       inputs:
         targetType: 'inline' # Optional. Options: filePath, inline
-        script: 'docker tag $(Service.Name) $(Service.Name):$(Build.BuildNumber)' # Required when targetType == Inline
+        script: 'docker tag $(ACR.FullName)/ketopal/$(Service.Name) $(ACR.FullName)/ketopal/$(Service.Name):$(Build.BuildNumber)' # Required when targetType == Inline
 
     - task: DockerCompose@0
       displayName: "Publish using Docker Compose"
