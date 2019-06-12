@@ -47,7 +47,11 @@ stages:
         dockerComposeCommand: 'build $(Service.Name)'
         includeSourceTags: true
         includeLatestTag: true
-        additionalImageTags: '$(Build.BuildNumber)'
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline' # Optional. Options: filePath, inline
+        script: 'docker tag $(Service.Name) $(Service.Name):$(Build.BuildNumber)' # Required when targetType == Inline
 
     - task: DockerCompose@0
       displayName: "Publish using Docker Compose"
@@ -56,10 +60,9 @@ stages:
         azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
         azureContainerRegistry: $(ACR.FullName)
         dockerComposeFile: docker-compose.yml
-        dockerComposeCommand: 'push $(Service.Name)'
+        dockerComposeCommand: 'push $(Service.Name):$(Build.BuildNumber)'
         includeSourceTags: true
         includeLatestTag: true
-        additionalImageTags: '$(Build.BuildNumber)'
 
     - task: HelmInstaller@1
       displayName: Helm installer
