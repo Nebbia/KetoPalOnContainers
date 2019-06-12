@@ -32,7 +32,7 @@ jobs:
             command: init
             arguments: |
               --service-account tiller
-            tillerNamespace: 'ketopal'
+            #tillerNamespace: 'ketopal'
         
         - task: AzureCLI@1
           displayName: 'Connect to ACR Helm Repo'
@@ -52,4 +52,4 @@ jobs:
             chartName: ${{ format('{0}/{1}', parameters.acrName, parameters.chartName) }}
             releaseName: ${{parameters.releaseName}}
             install: true
-            tillerNamespace: 'ketopal'
+            #tillerNamespace: 'ketopal'
