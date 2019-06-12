@@ -4,10 +4,10 @@ $aksResourceGroup = az aks show --resource-group prod-nebbia-rg --name prod-nebb
 
 $publicIp = az network public-ip create -g $aksResourceGroup -n prod-ketopal-api-ip --allocation-method static --query publicIp.ipAddress -o tsv
 
-kubectl create namespace ketopal-ingress
+kubectl create namespace ketopal
 
 helm install stable/nginx-ingress `
-    --namespace ketopal-ingress `
+    --namespace ketopal `
     --set controller.replicaCount=3 `
     --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux `
     --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux `
@@ -16,7 +16,7 @@ helm install stable/nginx-ingress `
 
 
 # verify that the load balancer gets created by (verify it has an external ip address)
-kubectl get service -l app=nginx-ingress --namespace ketopal-ingress
+kubectl get service -l app=nginx-ingress --namespace ketopal
 
 # Public IP address of your ingress controller (external ip address)
 $IP=$publicIp
@@ -54,3 +54,8 @@ helm install `
   --version v0.8.0 `
   jetstack/cert-manager
 
+# deploy the helm chart with the ingress controllers definition
+
+
+# deploy the cert object
+kubectl apply -f nginx-ingress/ketopal-api-certificate.yml
