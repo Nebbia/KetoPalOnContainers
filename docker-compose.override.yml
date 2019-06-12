@@ -8,6 +8,10 @@ services:
     ports:
       - "5433:1433"
 
+  keystore.data:
+    ports:
+      - "6379:6379"
+
   identity:
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development

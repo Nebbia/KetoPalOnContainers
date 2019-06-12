@@ -24,7 +24,9 @@ using KetoPal.Identity.Services;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace KetoPal.Identity.Controllers
 {
@@ -45,6 +47,7 @@ namespace KetoPal.Identity.Controllers
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
         private readonly IConfiguration _configuration;
+        private readonly IEmailSender _emailSender;
 
         public AccountController(
             ILoginService<ApplicationUser> loginService,
@@ -54,7 +57,8 @@ namespace KetoPal.Identity.Controllers
             UserManager<ApplicationUser> userManager,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IEmailSender emailSender)
         {
             _loginService = loginService;
             _interaction = interaction;
@@ -64,6 +68,7 @@ namespace KetoPal.Identity.Controllers
             _schemeProvider = schemeProvider;
             _events = events;
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         #region Sign In Flows
@@ -268,23 +273,39 @@ namespace KetoPal.Identity.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel vm, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber
+                    UserName = vm.UserName,
+                    Email = vm.Email,
+                    PhoneNumber = vm.PhoneNumber
                 };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, vm.Password);
+                
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        values: new { userId = user.Id, code = code },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(vm.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                }
+
                 if (result.Errors.Count() > 0)
                 {
                     AddErrors(result);
                     // If we got this far, something failed, redisplay form
-                    return View(model);
+                    return View(vm);
                 }
             }
 
@@ -296,7 +317,7 @@ namespace KetoPal.Identity.Controllers
                     if (ModelState.IsValid)
                     return RedirectToAction("login", "account", new { returnUrl = returnUrl });
                 else
-                    return View(model);
+                    return View(vm);
             }
 
             return RedirectToAction("index", "home");
@@ -308,6 +329,133 @@ namespace KetoPal.Identity.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
+        // GET: /Account/ConfirmEmail
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction("Index","Home");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+            }
+
+            return View();
+        }
+        #endregion
+        #region Account Recovery
+        // GET: /Account/ForgotPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+                // For more information on how to enable account confirmation and password reset please 
+                // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action(
+                    "ResetPassword",
+                    "Account",
+                    values: new { code },
+                    protocol: Request.Scheme);
+
+                await _emailSender.SendEmailAsync(
+                    model.Email,
+                    "Reset Password",
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+            return View();
+        }
+        // GET: /Account/ForgotPasswordConfirmation
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+        // GET: /Account/ResetPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(string code = null)
+        {
+            if (code == null)
+            {
+                return BadRequest("A code must be supplied for password reset.");
+            }
+
+            var vm = await BuildResetPasswordViewModelAsync(code);
+            return View(vm);
+        }
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View();
+        }
+
+        // GET: /Account/ResetPasswordConfirmation
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+        #endregion
+
+        #region Account Management
+
+        
+
         #endregion
         #region helper APIs for the AccountController
         /*****************************************/
@@ -443,6 +591,14 @@ namespace KetoPal.Identity.Controllers
             return vm;
         }
 
+        private async Task<ResetPasswordViewModel> BuildResetPasswordViewModelAsync(string code)
+        {
+            var vm = new ResetPasswordViewModel
+            {
+                Code = code
+            };
+            return vm;
+        }
         #endregion
     }
 }

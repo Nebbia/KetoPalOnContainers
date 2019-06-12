@@ -21,6 +21,7 @@ using KetoPal.Identity.Models;
 using KetoPal.Identity.Models.Account;
 using KetoPal.Identity.Models.AccountViewModels;
 using KetoPal.Identity.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace KetoPal.Identity.Controllers
 {
@@ -35,6 +36,7 @@ namespace KetoPal.Identity.Controllers
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
+        private readonly IEmailSender _emailSender;
 
         public ExternalController(
             ILoginService<ApplicationUser> loginService,
@@ -42,7 +44,8 @@ namespace KetoPal.Identity.Controllers
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IEventService events,
-            ILogger<ExternalController> logger)
+            ILogger<ExternalController> logger,
+            IEmailSender emailSender)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
@@ -52,6 +55,7 @@ namespace KetoPal.Identity.Controllers
             _clientStore = clientStore;
             _events = events;
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         /// <summary>

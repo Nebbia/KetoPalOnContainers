@@ -4,13 +4,17 @@ services:
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
 
+  keystore.data:
+    image: redis
+
   identity:
     image: ${REGISTRY:-ketopal}/identity:${PLATFORM:-linux}-${TAG:-latest}
     build: 
       context: .
       dockerfile: src/Services/Identity/KetoPal.Identity/Dockerfile
     depends_on: 
-      - sql.data 
+      - sql.data
+      - keystore.data
 
   api:
     image: ${REGISTRY-ketopal}/api:${PLATFORM:-linux}-${TAG:-latest}
