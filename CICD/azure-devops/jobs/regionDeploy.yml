@@ -28,11 +28,11 @@ jobs:
           inputs:
             connectionType: 'Kubernetes Service Connection'
             kubernetesServiceConnection: ${{ parameters.aksConnection }}
-            namespace: 'ketopal'
+            # namespace: 'ketopal'
             command: init
             arguments: |
               --service-account tiller
-            #tillerNamespace: 'ketopal'
+            tillerNamespace: 'tiller'
         
         - task: AzureCLI@1
           displayName: 'Connect to ACR Helm Repo'
@@ -46,10 +46,10 @@ jobs:
           inputs:
             connectionType: 'Kubernetes Service Connection'
             kubernetesServiceConnection: ${{ parameters.aksConnection }}
-            namespace: 'ketopal'
+            # namespace: 'ketopal'
             command: upgrade
             chartType: Name
             chartName: ${{ format('{0}/{1}', parameters.acrName, parameters.chartName) }}
             releaseName: ${{parameters.releaseName}}
             install: true
-            #tillerNamespace: 'ketopal'
+            # tillerNamespace: 'ketopal'
