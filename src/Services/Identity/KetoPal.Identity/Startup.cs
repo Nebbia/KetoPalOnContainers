@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using KetoPal.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using IdentityServer4.Services;
 using KetoPal.Identity.Models;
 using KetoPal.Identity.Services;
 
@@ -75,13 +76,13 @@ namespace KetoPal.Identity
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             var idBuilder = services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-                options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
-            })
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                    options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+                })
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(options =>
                 {
@@ -90,7 +91,8 @@ namespace KetoPal.Identity
                         {
                             sqlOptions.MigrationsAssembly(migrationsAssembly);
                             //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30),
+                                errorNumbersToAdd: null);
                         });
                 })
                 .AddOperationalStore(options =>
@@ -100,10 +102,12 @@ namespace KetoPal.Identity
                         {
                             sqlOptions.MigrationsAssembly(migrationsAssembly);
                             //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30),
+                                errorNumbersToAdd: null);
                         });
                 });
 
+            idBuilder.Services.AddTransient<IProfileService, ProfileService>();
             // in-memory, code config
             //idBuilder.AddInMemoryIdentityResources(Config.GetIdentityResources());
             //idBuilder.AddInMemoryApiResources(Config.GetApis());

@@ -23,6 +23,7 @@ using KetoPal.Identity.Models.AccountViewModels;
 using KetoPal.Identity.Services;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace KetoPal.Identity.Controllers
@@ -228,6 +229,11 @@ namespace KetoPal.Identity.Controllers
             {
                 // delete local authentication cookie
                 await HttpContext.SignOutAsync();
+
+                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+
+                // set this so UI rendering sees an anonymous user
+                HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
