@@ -61,7 +61,7 @@ stages:
         azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
         azureContainerRegistry: $(ACR.FullName)
         dockerComposeFile: docker-compose.yml
-        dockerComposeCommand: 'push $(ACR.FullName)/ketopal/$(Service.Name):$(Build.BuildNumber)'
+        dockerComposeCommand: 'push $(Service.Name)'
         includeSourceTags: true
         includeLatestTag: true
 
