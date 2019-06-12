@@ -19,7 +19,7 @@ variables:
   Azure.ServiceConnectionId: 'NebbiaPartner'
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-api
-  Service.Name: ketopal-api
+  Service.Name: api
   # ========================================================================
   #                           Optional variables 
   # ========================================================================
