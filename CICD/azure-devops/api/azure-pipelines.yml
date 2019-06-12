@@ -20,6 +20,7 @@ variables:
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-api
   Service.Name: api
+  Service.Dockerfile: src/Services/API/KetoPal.Api/Dockerfile
   # ========================================================================
   #                           Optional variables 
   # ========================================================================
@@ -37,33 +38,43 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: DockerCompose@0
-      displayName: "Build using Docker Compose"
-      inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
-        azureContainerRegistry: $(ACR.FullName)
-        dockerComposeFile: docker-compose.yml
-        dockerComposeCommand: 'build $(Service.Name)'
-        includeSourceTags: true
-        includeLatestTag: true
+    # - task: DockerCompose@0
+    #   displayName: "Build using Docker Compose"
+    #   inputs:
+    #     containerregistrytype: 'Azure Container Registry'
+    #     azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
+    #     azureContainerRegistry: $(ACR.FullName)
+    #     dockerComposeFile: docker-compose.yml
+    #     dockerComposeCommand: 'build $(Service.Name)'
+    #     includeSourceTags: true
+    #     includeLatestTag: true
 
-    - task: Bash@3
-      displayName: "Tag Image using Bash"
-      inputs:
-        targetType: 'inline' # Optional. Options: filePath, inline
-        script: 'docker tag $(ACR.FullName)/ketopal/$(Service.Name):linux-latest $(ACR.FullName)/ketopal/$(Service.Name):$(Build.BuildNumber)' # Required when targetType == Inline
+    # - task: Bash@3
+    #   displayName: "Tag Image using Bash"
+    #   inputs:
+    #     targetType: 'inline' # Optional. Options: filePath, inline
+    #     script: 'docker tag $(ACR.FullName)/ketopal/$(Service.Name):linux-latest $(ACR.FullName)/ketopal/$(Service.Name):$(Build.BuildNumber)' # Required when targetType == Inline
 
-    - task: DockerCompose@0
-      displayName: "Publish using Docker Compose"
+    # - task: DockerCompose@0
+    #   displayName: "Publish using Docker Compose"
+    #   inputs:
+    #     containerregistrytype: 'Azure Container Registry'
+    #     azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
+    #     azureContainerRegistry: $(ACR.FullName)
+    #     dockerComposeFile: docker-compose.yml
+    #     dockerComposeCommand: 'push $(Service.Name)'
+    #     includeSourceTags: true
+    #     includeLatestTag: true
+
+    - task: Docker@2
+      displayName: Build and Push
       inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscriptionEndpoint: $(Azure.ServiceConnectionId)
-        azureContainerRegistry: $(ACR.FullName)
-        dockerComposeFile: docker-compose.yml
-        dockerComposeCommand: 'push $(Service.Name)'
-        includeSourceTags: true
-        includeLatestTag: true
+        command: buildAndPush
+        containerRegistry: NebbiaRegistry
+        repository: $(ACR.FullName)/ketopal/$(Service.Name)
+        Dockerfile: $(Service.Dockerfile)
+        tags: |
+          $(Build.BuildNumber)
 
     - task: HelmInstaller@1
       displayName: Helm installer
