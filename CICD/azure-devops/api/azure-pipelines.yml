@@ -18,6 +18,7 @@ variables:
   # ========================================================================
   Azure.ServiceConnectionId: 'NebbiaPartner'
   ACR.ContainerRegistryServiceConnnection: 'NebbiaRegistry'
+  AKS.ServiceConnectionId: 'prod-prod-nebbia-aks-ketopal-1560279773186'
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-api
   Service.Name: api
