@@ -21,8 +21,13 @@ using KetoPal.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using IdentityServer4.Services;
+using KetoPal.Identity.Configuration;
+using KetoPal.Identity.Extentions;
 using KetoPal.Identity.Models;
 using KetoPal.Identity.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using StackExchange.Redis;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace KetoPal.Identity
 {
@@ -48,7 +53,14 @@ namespace KetoPal.Identity
                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                     }));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+                    {
+                        config.SignIn.RequireConfirmedEmail = true;
+                        config.Tokens.ProviderMap.Add("CustomEmailConfirmation",
+                            new TokenProviderDescriptor(
+                                typeof(CustomEmailConfirmationTokenProvider<ApplicationUser>)));
+                        config.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+                    })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -63,6 +75,12 @@ namespace KetoPal.Identity
                 options.AuthenticationDisplayName = "Windows";
             });
 
+            services.AddDataProtection(opts =>
+                {
+                    opts.ApplicationDiscriminator = "ketopal.identity";
+                })
+                .PersistKeysToStackExchangeRedis(ConnectionMultiplexer.Connect(Configuration["DPConnectionString"]), "DataProtection-Keys");
+
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddSqlServer(Configuration["ConnectionString"],
@@ -71,6 +89,7 @@ namespace KetoPal.Identity
 
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
             services.AddTransient<IRedirectService, RedirectService>();
+
 
             var connectionString = Configuration["ConnectionString"];
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
@@ -126,6 +145,10 @@ namespace KetoPal.Identity
             {
                 throw new Exception("need to configure key material");
             }
+
+            services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddAuthentication()
                 .AddGoogle(options =>
