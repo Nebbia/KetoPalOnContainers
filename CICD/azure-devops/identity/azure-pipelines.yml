@@ -22,7 +22,7 @@ variables:
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-identity
   Service.Name: identity
-  Service.Dockerfile: src/Services/API/KetoPal.Api/Dockerfile
+  Service.Dockerfile: src/Services/Identity/KetoPal.Identity/Dockerfile
   # ========================================================================
   #                           Optional variables 
   # ========================================================================
