@@ -73,6 +73,7 @@ stages:
         command: buildAndPush
         containerRegistry: $(ACR.ContainerRegistryServiceConnnection)
         repository: $(ACR.FullName)/ketopal/$(Service.Name)
+        buildContext: .
         Dockerfile: $(Service.Dockerfile)
         tags: |
           $(Build.BuildNumber)
