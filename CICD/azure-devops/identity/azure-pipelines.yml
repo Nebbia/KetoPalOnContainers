@@ -107,4 +107,6 @@ stages:
       pool: 'ubuntu-16.04'
       env: prod.ketopal
       tillerNamespace: kube-system
+      imageTag: $(Build.BuildNumber)
+      buildID: $(Build.BuildId)
       

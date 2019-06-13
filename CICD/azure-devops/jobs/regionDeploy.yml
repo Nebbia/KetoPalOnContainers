@@ -9,6 +9,8 @@ parameters:
   pool: ''
   env: ''
   tillerNamespace: 'tiller'
+  imageTag: 'latest'
+  buildId: ''
 
 jobs:
 - deployment: ${{ parameters.deployment }}
@@ -24,7 +26,7 @@ jobs:
           displayName: Helm installer
           inputs: 
             helmVersionToInstall: latest
-            
+
         - task: HelmDeploy@0
           displayName: 'helm init'
           inputs:
@@ -53,3 +55,6 @@ jobs:
             releaseName: ${{parameters.releaseName}}
             install: true
             waitForExecution: false
+            overrideValues: |
+              image.tag=${{ parameters.imageTag }}
+              buildID=${{ parameters.buildID }}
