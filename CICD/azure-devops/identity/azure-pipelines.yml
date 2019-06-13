@@ -95,10 +95,10 @@ stages:
         PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
 
 - stage: Production
+  variables: 
+  - group: eastus_vars
   jobs:
   - template: ../jobs/regionDeploy.yml
-    variables: 
-    - group: eastus_vars
     parameters:
       azureSubscription: $(Azure.ServiceConnectionId)
       aksConnection: $(AKS.ServiceConnectionId)
