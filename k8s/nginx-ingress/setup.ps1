@@ -22,7 +22,7 @@ kubectl get service -l app=nginx-ingress --namespace ketopal
 $IP=$publicIp
 
 # Name to associate with public IP address
-$DNSNAME="keto-pal-api"
+$DNSNAME="ketopal-api"
 
 # Get the resource-id of the public ip
 $PUBLICIPID=$(az network public-ip list --query "[?ipAddress!=null]|[?contains(ipAddress, '$IP')].[id]" --output tsv)
