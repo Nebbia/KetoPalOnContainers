@@ -97,6 +97,8 @@ stages:
 - stage: Production
   jobs:
   - template: ../jobs/regionDeploy.yml
+    variables: 
+    - group: eastus_vars
     parameters:
       azureSubscription: $(Azure.ServiceConnectionId)
       aksConnection: $(AKS.ServiceConnectionId)
