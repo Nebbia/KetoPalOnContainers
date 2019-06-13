@@ -48,7 +48,7 @@ spec:
               valueFrom: 
                 secretKeyRef:
                   name: {{ include "ketopalapi.fullname" . }}-connectionstrings
-                  key: connectionStrings_foodDb
+                  key: foodDb
             {{- $root := . }}
             {{- range $ref, $values := .Values.secrets }}
             {{- range $key, $value := $values }}
