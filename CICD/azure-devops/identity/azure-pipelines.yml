@@ -22,14 +22,14 @@ variables:
   ACR.Name: nebbiaregistry
   Chart.Name: ketopal-identity
   Service.Name: identity
+  Image.Name: ketopal/identity
   Service.Dockerfile: src/Services/Identity/KetoPal.Identity/Dockerfile
   # ========================================================================
   #                           Optional variables 
   # ========================================================================
   ACR.RepositoryName: '$(ACR.Name)'
-  ACR.ImageName: '$(ACR.Name):$(Build.BuildId)'
   ACR.FullName: '$(ACR.Name).azurecr.io'
-  ACR.ImageFullName: '$(ACR.FullName)/$(ACR.ImageName)'
+  ACR.ImageFullName: '$(ACR.FullName)/$(Image.Name)'
   System.Debug: 'false'
 
 stages:
