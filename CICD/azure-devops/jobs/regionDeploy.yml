@@ -60,6 +60,6 @@ jobs:
             namespace: ${{ parameters.namespace }}
             tillerNamespace: ${{ parameters.namespace }}
             overrideValues: |
-              image.repository=${{ parameters.imageRepository }}
+              image.repository=${{ parameters.imageRepository }},
               image.tag=${{ parameters.imageTag }},
               buildID=${{ parameters.buildID }}
