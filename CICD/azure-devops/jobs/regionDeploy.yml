@@ -36,6 +36,7 @@ jobs:
             upgradetiller: true
             waitForExecution: true
             tillerNamespace: ${{ parameters.tillerNamespace }}
+            arguments: --service-account tiller
         
         - task: AzureCLI@1
           displayName: 'Connect to ACR Helm Repo'
@@ -55,6 +56,7 @@ jobs:
             releaseName: ${{parameters.releaseName}}
             install: true
             waitForExecution: false
+            tillerNamespace: ${{ parameters.tillerNamespace }}
             overrideValues: |
               image.tag=${{ parameters.imageTag }}
               buildID=${{ parameters.buildID }}
