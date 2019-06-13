@@ -106,3 +106,5 @@ stages:
       releaseName: identity.api
       pool: 'ubuntu-16.04'
       env: prod.ketopal
+      tillerNamespace: kube-system
+      
