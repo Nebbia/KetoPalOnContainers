@@ -23,7 +23,7 @@ variables:
   Chart.Name: ketopal-gateway
   Service.Name: gateway
   Image.Name: ketopal/gateway
-  Service.Dockerfile: src/Gateways/KetoPal.Gateway//Dockerfile
+  Service.Dockerfile: src/Gateways/KetoPal.Gateway/Dockerfile
   Release.Name: ketopal-gateway-v1
   # ========================================================================
   #                           Optional variables 
