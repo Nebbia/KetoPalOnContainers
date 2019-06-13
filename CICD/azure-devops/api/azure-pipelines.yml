@@ -101,7 +101,7 @@ stages:
       chartName: $(Chart.Name)
       deployment: 'deployEastUS'
       deploymentDisplayName: 'Deploy API East US'
-      releaseName: angry-mongoose
+      releaseName: ketopal-api-v1
       pool: 'ubuntu-16.04'
       env: prod.ketopal
       namespace: ketopal

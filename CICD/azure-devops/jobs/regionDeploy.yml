@@ -54,7 +54,7 @@ jobs:
             chartType: Name
             chartName: ${{ format('{0}/{1}', parameters.acrName, parameters.chartName) }}
             releaseName: ${{parameters.releaseName}}
-            install: true
+            install: true # this doesn't work for first time installs :-( deploy manually first
             waitForExecution: false
             namespace: ${{ parameters.namespace }}
             tillerNamespace: ${{ parameters.namespace }}
