@@ -9,9 +9,7 @@ parameters:
   pool: ''
   env: ''
   namespace: 'default'
-  imageTag: 'latest'
-  buildId: ''
-  imageRepository: ''
+  helmOverrideValues: ''
 
 jobs:
 - deployment: ${{ parameters.deployment }}
@@ -59,7 +57,4 @@ jobs:
             waitForExecution: false
             namespace: ${{ parameters.namespace }}
             tillerNamespace: ${{ parameters.namespace }}
-            overrideValues: |
-              image.repository=${{ parameters.imageRepository }},
-              image.tag=${{ parameters.imageTag }},
-              buildID=${{ parameters.buildID }}
+            overrideValues: ${{ parameters.helmOverrideValues }} #command seperated list with no spaces
