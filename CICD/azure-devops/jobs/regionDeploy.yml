@@ -8,7 +8,7 @@ parameters:
   releaseName: ''
   pool: ''
   env: ''
-  tillerNamespace: 'tiller'
+  namespace: 'default'
   imageTag: 'latest'
   buildId: ''
 
@@ -35,7 +35,7 @@ jobs:
             command: init
             upgradetiller: true
             waitForExecution: true
-            tillerNamespace: ${{ parameters.tillerNamespace }}
+            tillerNamespace: ${{ parameters.namespace }}
             arguments: --service-account tiller
         
         - task: AzureCLI@1
@@ -56,7 +56,8 @@ jobs:
             releaseName: ${{parameters.releaseName}}
             install: true
             waitForExecution: false
-            tillerNamespace: ${{ parameters.tillerNamespace }}
+            namespace: ${{ parameters.namespace }}
+            tillerNamespace: ${{ parameters.namespace }}
             overrideValues: |
               image.tag=${{ parameters.imageTag }}
               buildID=${{ parameters.buildID }}

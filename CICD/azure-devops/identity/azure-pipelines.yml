@@ -106,7 +106,7 @@ stages:
       releaseName: identity.api
       pool: 'ubuntu-16.04'
       env: prod.ketopal
-      tillerNamespace: kube-system
+      namespace: ketopal
       imageTag: $(Build.BuildNumber)
       buildID: $(Build.BuildId)
       
