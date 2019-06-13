@@ -31,9 +31,9 @@ jobs:
             kubernetesServiceConnection: ${{ parameters.aksConnection }}
             # namespace: 'ketopal'
             command: init
-            arguments: |
-              --service-account tiller
-              --upgrade
+            upgradetiller: true
+            waitForExecution: true
+            arguments: --client-only
             tillerNamespace: ${{ parameters.tillerNamespace }}
         
         - task: AzureCLI@1
@@ -54,4 +54,5 @@ jobs:
             chartName: ${{ format('{0}/{1}', parameters.acrName, parameters.chartName) }}
             releaseName: ${{parameters.releaseName}}
             install: true
+            waitForExecution: false
             # tillerNamespace: 'ketopal'
