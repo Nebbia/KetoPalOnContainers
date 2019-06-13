@@ -42,6 +42,13 @@ spec:
               port: http
           {{- end }}
           env:
+            - name: "ASPNETCORE_ENVIRONMENT"
+              value: "Production"
+            - name: "ConnectionStrings__FoodDb"
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ include "ketopalapi.fullname" . }}-secrets
+                  key: connectionStrings_foodDb
             {{- $root := . }}
             {{- range $ref, $values := .Values.secrets }}
             {{- range $key, $value := $values }}
