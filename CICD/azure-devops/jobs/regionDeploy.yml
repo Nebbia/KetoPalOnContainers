@@ -24,16 +24,15 @@ jobs:
           displayName: Helm installer
           inputs: 
             helmVersionToInstall: latest
+            
         - task: HelmDeploy@0
           displayName: 'helm init'
           inputs:
             connectionType: 'Kubernetes Service Connection'
             kubernetesServiceConnection: ${{ parameters.aksConnection }}
-            # namespace: 'ketopal'
             command: init
             upgradetiller: true
             waitForExecution: true
-            arguments: --client-only
             tillerNamespace: ${{ parameters.tillerNamespace }}
         
         - task: AzureCLI@1
@@ -48,11 +47,9 @@ jobs:
           inputs:
             connectionType: 'Kubernetes Service Connection'
             kubernetesServiceConnection: ${{ parameters.aksConnection }}
-            # namespace: 'ketopal'
             command: upgrade
             chartType: Name
             chartName: ${{ format('{0}/{1}', parameters.acrName, parameters.chartName) }}
             releaseName: ${{parameters.releaseName}}
             install: true
             waitForExecution: false
-            # tillerNamespace: 'ketopal'
