@@ -44,5 +44,25 @@ namespace KetoPal.Identity.Services
         {
             return _signInManager.CreateUserPrincipalAsync(user);
         }
+
+        public AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl, string userId)
+        {
+            return _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, userId);
+        }
+
+        public Task<ExternalLoginInfo> GetExternalLoginInfoAsync(string userId)
+        {
+            return _signInManager.GetExternalLoginInfoAsync(userId);
+        }
+
+        public Task<IEnumerable<AuthenticationScheme>> GetExternalAuthenticationSchemesAsync()
+        {
+            return _signInManager.GetExternalAuthenticationSchemesAsync();
+        }
+
+        public Task<bool> IsTwoFactorClientRememberedAsync(ApplicationUser user)
+        {
+            return _signInManager.IsTwoFactorClientRememberedAsync(user);
+        }
     }
 }

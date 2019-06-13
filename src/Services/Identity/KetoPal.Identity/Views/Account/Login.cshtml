@@ -1,4 +1,7 @@
 @using KetoPal.Identity.Models.AccountViewModels
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Authentication
 @model LoginViewModel
 
 <div class="login-page">
@@ -44,6 +47,12 @@
                                     <button class="btn btn-primary" name="button" value="login">Login</button>
                                     <button class="btn btn-default" name="button" value="cancel">Cancel</button>
                                 </div>
+                                <p>
+                                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                                </p>
+                                <p>
+                                    <a asp-action="ForgotPassword">Forgot your password?</a>
+                                </p>
                             </fieldset>
                         </form>
                     </div>

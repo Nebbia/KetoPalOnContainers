@@ -148,7 +148,9 @@ namespace KetoPal.Identity
 
             services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<ISmsSender, SmsSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.Configure<SMSoptions>(Configuration);
 
             services.AddAuthentication()
                 .AddGoogle(options =>

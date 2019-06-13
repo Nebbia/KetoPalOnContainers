@@ -51,7 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Account\Manage\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
