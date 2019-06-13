@@ -29,6 +29,7 @@ variables:
   ACR.RepositoryName: '$(ACR.Name)'
   ACR.ImageName: '$(ACR.Name):$(Build.BuildId)'
   ACR.FullName: '$(ACR.Name).azurecr.io'
+  ACR.ImageFullName: '$(ACR.FullName)/$(ACR.ImageName)'
   System.Debug: 'false'
 
 stages:
@@ -107,3 +108,4 @@ stages:
       namespace: ketopal
       imageTag: $(Build.BuildNumber)
       buildID: $(Build.BuildId)
+      imageRepository: $(ACR.ImageFullName)
