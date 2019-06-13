@@ -5,8 +5,8 @@ trigger:
   paths:
     include:
       - src/BuildingBlocks/*
-      - src/Services/Identity/*
-      - k8s/charts/ketopal-identity/*
+      - src/Gateways/KetoPal.Gateway/*
+      - k8s/charts/ketopal-gateway/*
 pr: none
 
 resources:
@@ -20,11 +20,11 @@ variables:
   AKS.ServiceConnectionId: 'prod-prod-nebbia-aks-ketopal-1560279773186'
   ACR.ContainerRegistryServiceConnnection: 'NebbiaRegistry'
   ACR.Name: nebbiaregistry
-  Chart.Name: ketopal-identity
-  Service.Name: identity
-  Image.Name: ketopal/identity
-  Service.Dockerfile: src/Services/Identity/KetoPal.Identity/Dockerfile
-  Release.Name: ketopal-identity-v1
+  Chart.Name: ketopal-gateway
+  Service.Name: gateway
+  Image.Name: ketopal/gateway
+  Service.Dockerfile: src/Gateways/KetoPal.Gateway//Dockerfile
+  Release.Name: ketopal-gateway-v1
   # ========================================================================
   #                           Optional variables 
   # ========================================================================

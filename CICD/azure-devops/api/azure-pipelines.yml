@@ -24,6 +24,7 @@ variables:
   Service.Name: api
   Image.Name: ketopal/api
   Service.Dockerfile: src/Services/API/KetoPal.Api/Dockerfile
+  Release.Name: ketopal-api-v1
   # ========================================================================
   #                           Optional variables 
   # ========================================================================
@@ -105,7 +106,7 @@ stages:
       chartName: $(Chart.Name)
       deployment: 'deployEastUS'
       deploymentDisplayName: 'Deploy API East US'
-      releaseName: ketopal-api-v1
+      releaseName: $(Release.Name)
       pool: 'ubuntu-16.04'
       env: prod.ketopal
       namespace: ketopal
