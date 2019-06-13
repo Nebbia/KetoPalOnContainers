@@ -34,7 +34,7 @@ jobs:
             arguments: |
               --service-account tiller
               --upgrade
-            tillerNamespace: $(tillerNamespace)
+            tillerNamespace: ${{ tillerNamespace }}
         
         - task: AzureCLI@1
           displayName: 'Connect to ACR Helm Repo'
