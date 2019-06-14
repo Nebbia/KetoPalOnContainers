@@ -26,11 +26,7 @@ spec:
       secretName: {{ .secretName }}
   {{- end }}
 {{- end }}
-  rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ . }}
-      backend:
-        serviceName:  {{ $fullName }}
-        servicePort: 80        
-  {{- end }}
+  backend:
+    serviceName: {{ $fullName }}
+    servicePort: 80 
 {{- end }}
