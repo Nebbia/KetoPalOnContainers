@@ -4,12 +4,14 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>f6f8cc09-4ed4-4909-ac10-9ed8d5bc7b87</UserSecretsId>
+    <TypeScriptToolsVersion>3.4</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.3" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.4.0" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -22,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="Sendgrid" Version="9.11.0" />
 
     <PackageReference Include="Serilog" Version="2.8.0" />
@@ -51,8 +54,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Account\Manage\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES2016</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
 
 </Project>

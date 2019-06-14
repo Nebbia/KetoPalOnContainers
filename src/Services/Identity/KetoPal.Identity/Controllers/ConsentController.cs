@@ -13,9 +13,10 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using KetoPal.Identity.Extentions;
-using KetoPal.Identity.Models.ConsentViewModels;
-using KetoPal.Identity.Models.AccountViewModels;
+using KetoPal.Identity.Filters;
 using KetoPal.Identity.Models.Consent;
+using KetoPal.Identity.ViewModels.Account;
+using KetoPal.Identity.ViewModels.Consent;
 
 namespace KetoPal.Identity.Controllers
 {
@@ -201,7 +202,7 @@ namespace KetoPal.Identity.Controllers
         private ConsentViewModel CreateConsentViewModel(
             ConsentInputModel model, string returnUrl,
             AuthorizationRequest request,
-            Client client, Resources resources)
+            Client client, IdentityServer4.Models.Resources resources)
         {
             var vm = new ConsentViewModel
             {

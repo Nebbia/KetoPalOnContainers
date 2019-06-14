@@ -30,6 +30,13 @@
         "jquery.validate.min.js",
         "jquery.validate.js"
       ]
+    },
+    {
+      "library": "jquery.qrcode@1.0",
+      "destination": "wwwroot/lib/jquery-qrcode/",
+      "files": [
+        "jquery.qrcode.min.js"
+      ]
     }
   ]
 }

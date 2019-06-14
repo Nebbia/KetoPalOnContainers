@@ -19,14 +19,18 @@ using Microsoft.Extensions.Logging;
 using KetoPal.Identity.Extentions;
 using KetoPal.Identity.Models;
 using KetoPal.Identity.Models.Account;
-using KetoPal.Identity.Models.AccountViewModels;
 using KetoPal.Identity.Services;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using KetoPal.Identity.Filters;
+using KetoPal.Identity.ViewModels.Account;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Localization;
+using KetoPal.Identity.Resources;
+using System.Reflection;
 
 namespace KetoPal.Identity.Controllers
 {
@@ -36,7 +40,7 @@ namespace KetoPal.Identity.Controllers
     /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
     /// </summary>
     [SecurityHeaders]
-    [AllowAnonymous]
+    
     public class AccountController : Controller
     {
         private readonly ILoginService<ApplicationUser> _loginService;
@@ -48,6 +52,7 @@ namespace KetoPal.Identity.Controllers
         private readonly IEventService _events;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer _sharedLocalizer;
 
         public AccountController(
             ILoginService<ApplicationUser> loginService,
@@ -58,7 +63,8 @@ namespace KetoPal.Identity.Controllers
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
             IConfiguration configuration,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizerFactory factory)
         {
             _loginService = loginService;
             _interaction = interaction;
@@ -69,6 +75,10 @@ namespace KetoPal.Identity.Controllers
             _events = events;
             _configuration = configuration;
             _emailSender = emailSender;
+
+            var type = typeof(SharedResource);
+            var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
+            _sharedLocalizer = factory.Create("SharedResource", assemblyName.Name);
         }
 
         #region Sign In Flows
@@ -76,6 +86,7 @@ namespace KetoPal.Identity.Controllers
         /// Entry point into the login workflow
         /// </summary>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl)
         {
             // build a model so we know what to show on the login page
@@ -94,6 +105,7 @@ namespace KetoPal.Identity.Controllers
         /// Handle postback from username/password login
         /// </summary>
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
@@ -130,32 +142,40 @@ namespace KetoPal.Identity.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _loginService.FindByUsername(model.Username);
+                bool rememberMe = AccountOptions.AllowRememberLogin && model.RememberLogin;
                 // validate username/password against in-memory store
-                if (await _loginService.ValidateCredentials(user, model.Password))
+
+                var result = await _loginService.PasswordSignInAsync(user, model.Password, rememberMe);
+                if (result.Succeeded||result.RequiresTwoFactor)
                 {
                     var tokenLifetime = _configuration.GetValue("TokenLifetimeMinutes", 120);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 
-                    // only set explicit expiration here if user chooses "remember me". 
-                    // otherwise we rely upon expiration configured in cookie middleware.
-                    AuthenticationProperties props = new AuthenticationProperties
-                    {
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(tokenLifetime),
-                        AllowRefresh = true,
-                        RedirectUri = model.ReturnUrl
-                    };
+                    //// only set explicit expiration here if user chooses "remember me". 
+                    //// otherwise we rely upon expiration configured in cookie middleware.
+                    //AuthenticationProperties props = new AuthenticationProperties
+                    //{
+                    //    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(tokenLifetime),
+                    //    AllowRefresh = true,
+                    //    RedirectUri = model.ReturnUrl
+                    //};
 
-                    if (AccountOptions.AllowRememberLogin && model.RememberLogin)
-                    {
-                        var permanentTokenLifetime = _configuration.GetValue("PermanentTokenLifetimeDays", 365);
-                        props.ExpiresUtc = DateTimeOffset.UtcNow.AddDays(permanentTokenLifetime);
-                        props.IsPersistent = true;
-                    };
+                    //if (AccountOptions.AllowRememberLogin && model.RememberLogin)
+                    //{
+                    //    var permanentTokenLifetime = _configuration.GetValue("PermanentTokenLifetimeDays", 365);
+                    //    props.ExpiresUtc = DateTimeOffset.UtcNow.AddDays(permanentTokenLifetime);
+                    //    props.IsPersistent = true;
+                    //};
 
-                    await _loginService.SignInAsync(user, props);
+                    //await _loginService.SignInAsync(user, props);
 
                     // issue authentication cookie with subject ID and username
                     //await HttpContext.SignInAsync(user.SubjectId, user.Username, props);
+
+                    if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToAction("SendCode","Authority", new { ReturnUrl = model.ReturnUrl, RememberMe = model.RememberLogin });
+                    }
 
                     if (context != null)
                     {
@@ -186,10 +206,17 @@ namespace KetoPal.Identity.Controllers
                     }
                 }
 
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(2, "User account locked out.");
+                    return View("Lockout");
+                }
+
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials"));
-                ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+                ModelState.AddModelError(string.Empty, _sharedLocalizer["INVALID_LOGIN_ATTEMPT"]);
             }
 
+            
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
             return View(vm);
@@ -200,6 +227,7 @@ namespace KetoPal.Identity.Controllers
         /// Show logout page
         /// </summary>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Logout(string logoutId)
         {
             if(User.Identity.IsAuthenticated == false)
@@ -224,6 +252,7 @@ namespace KetoPal.Identity.Controllers
         /// Handle logout page postback
         /// </summary>
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout(LogoutInputModel model)
         {
@@ -237,11 +266,11 @@ namespace KetoPal.Identity.Controllers
 
                 await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
-                // set this so UI rendering sees an anonymous user
-                HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
-
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
+
+                // set this so UI rendering sees an anonymous user
+                HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
             }
 
             // check if we need to trigger sign-out at an upstream identity provider
@@ -257,6 +286,14 @@ namespace KetoPal.Identity.Controllers
             }
 
             return View("LoggedOut", vm);
+        }
+
+        // GET: /Account/Lockout
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Lockout()
+        {
+            return View();
         }
         #endregion
         #region Registration
@@ -450,12 +487,6 @@ namespace KetoPal.Identity.Controllers
         {
             return View();
         }
-        #endregion
-
-        #region Account Management
-
-        
-
         #endregion
         #region helper APIs for the AccountController
         /*****************************************/

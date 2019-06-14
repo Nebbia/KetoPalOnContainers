@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
 using KetoPal.Identity.Extentions;
-using KetoPal.Identity.Models.GrantsViewModels;
+using KetoPal.Identity.Filters;
+using KetoPal.Identity.ViewModels.Grants;
 
 namespace KetoPal.Identity.Controllers
 {

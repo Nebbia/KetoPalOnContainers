@@ -1,7 +1,9 @@
-﻿@using KetoPal.Identity.Models.AccountViewModels
-@model LoggedOutViewModel
+﻿
+@inject LocService SharedLocalizer
+@using KetoPal.Identity.Resources
+@model KetoPal.Identity.ViewModels.Account.LoggedOutViewModel
 
-@{ 
+@{
     // set this so the layout rendering sees an anonymous user
     ViewData["signed-out"] = true;
 }
@@ -9,7 +11,7 @@
 <div class="page-header logged-out">
     <h1>
         Logout
-        <small>You are now logged out</small>
+        <small>@SharedLocalizer.GetLocalizedHtmlString("LOGOUT_TEXT")</small>
     </h1>
 
     @if (Model.PostLogoutRedirectUri != null)

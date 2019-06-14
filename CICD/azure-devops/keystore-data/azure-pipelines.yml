@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - k8s/charts/keystore-data/*
+
+variables:
+  # ========================================================================
+  #                          Mandatory variables 
+  # ========================================================================
+  
+  Azure.ServiceConnectionId: 'NebbiaPartner'
+  ACR.Name: nebbiaregistry
+  Chart.Name: keystore-data
+  # ========================================================================
+  #                           Optional variables 
+  # ========================================================================
+  ACR.RepositoryName: '$(ACR.Name)'
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+steps:
+- task: HelmInstaller@1
+  displayName: Helm installer
+  inputs: 
+    helmVersionToInstall: latest
+
+- task: HelmDeploy@0
+  displayName: 'Init Helm Client'
+  inputs:
+    connectionType: None
+    command: init
+    arguments: '--client-only'
+
+- task: HelmDeploy@0
+  displayName: 'Package Helm Charts'
+  inputs:
+    connectionType: None
+    command: package
+    chartPath: 'k8s/charts/$(Chart.Name)'
+    chartVersion: '$(Build.BuildId)'
+    destination: $(Build.ArtifactStagingDirectory)
+    updateDependency: true
+
+- task: AzureCLI@1
+  displayName: 'Push helm chart'
+  inputs:
+    azureSubscription: $(Azure.ServiceConnectionId)
+    scriptLocation: inlineScript
+    inlineScript: 'az acr helm push -n $(ACR.RepositoryName) $(Build.ArtifactStagingDirectory)/$(Chart.Name)-$(Build.BuildId).tgz'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))

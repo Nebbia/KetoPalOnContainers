@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using KetoPal.Identity.Extentions;
-using KetoPal.Identity.Models.DiagnosticsViewModels;
+using KetoPal.Identity.Filters;
+using KetoPal.Identity.ViewModels.Diagnostics;
 
 namespace KetoPal.Identity.Controllers
 {

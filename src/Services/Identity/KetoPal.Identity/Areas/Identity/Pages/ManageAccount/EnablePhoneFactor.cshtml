@@ -1,0 +1,44 @@
+﻿@page
+@model EnablePhoneFactorModel
+@{
+     ViewData["Title"] = "Configure Phone Factor";
+     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+ }
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+<div>
+    <p>To use text message verification please enter your phone number and verify it</p>
+    @if (!Model.PendingVerification)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <form id="verify-code" method="post">
+                    <div class="form-group">
+                        <label asp-for="Input.PhoneNumber" class="control-label">Phone Number</label>
+                        <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </form>
+            </div>
+        </div>
+    }
+    @if (Model.PendingVerification)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <form id="verify-code" method="post">
+                    <div class="form-group">
+                        <label asp-for="Input.Code" class="control-label">Verification Code</label>
+                        <input asp-for="Input.Code" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Input.Code" class="text-danger"></span>
+                    </div>
+                    <button type="submit" asp-page-handler="VerifyCode" class="btn btn-primary">Verify</button>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </form>
+            </div>
+        </div>
+    }
+</div>

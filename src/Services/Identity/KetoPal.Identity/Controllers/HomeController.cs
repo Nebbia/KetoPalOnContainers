@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using KetoPal.Identity.Extentions;
 using KetoPal.Identity.Models;
 using System.Threading.Tasks;
+using KetoPal.Identity.Filters;
+using KetoPal.Identity.ViewModels;
 
 namespace KetoPal.Identity.Controllers
 {

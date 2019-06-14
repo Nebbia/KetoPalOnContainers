@@ -6,7 +6,6 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4.Events;
-using IdentityServer4.Quickstart.UI;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Test;
@@ -17,10 +16,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using KetoPal.Identity.Extentions;
+using KetoPal.Identity.Filters;
 using KetoPal.Identity.Models;
 using KetoPal.Identity.Models.Account;
-using KetoPal.Identity.Models.AccountViewModels;
 using KetoPal.Identity.Services;
+using KetoPal.Identity.ViewModels.Account;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace KetoPal.Identity.Controllers
