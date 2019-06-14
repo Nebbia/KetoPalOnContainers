@@ -36,4 +36,6 @@ spec:
             backend:
               serviceName: {{ $fullName }}
               servicePort: 80
+        {{- end }}
+  {{- end }}
 {{- end }}
