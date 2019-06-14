@@ -32,6 +32,9 @@ namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
         public bool PendingVerification { get; set; }
 
         [TempData]
+        public string InternalPhoneNumber { get; set; }
+
+        [TempData]
         public string StatusMessage { get; set; }
 
         [BindProperty]
@@ -80,6 +83,7 @@ namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
             var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, Input.PhoneNumber);
             await _smsSender.SendSmsAsync(Input.PhoneNumber, "Your security code is: " + code);
             PendingVerification = true;
+            InternalPhoneNumber = Input.PhoneNumber;
             StatusMessage = "A verification code has been sent to you phone number";
             return Page();
         }
@@ -96,14 +100,14 @@ namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
                 return Page();
             }
 
-            var isCodeValid = await _userManager.VerifyChangePhoneNumberTokenAsync(user, Input.Code, Input.PhoneNumber);
+            var isCodeValid = await _userManager.VerifyChangePhoneNumberTokenAsync(user, Input.Code, InternalPhoneNumber);
             if (!isCodeValid)
             {
                 ModelState.AddModelError("Input.Code", "Verification code is invalid.");
                 return Page();
             }
 
-            var result = await _userManager.ChangePhoneNumberAsync(user, Input.PhoneNumber, Input.Code);
+            var result = await _userManager.ChangePhoneNumberAsync(user, InternalPhoneNumber, Input.Code);
             if (result.Succeeded)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
