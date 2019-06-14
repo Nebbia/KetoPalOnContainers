@@ -31,7 +31,7 @@ ingress:
       paths: []
     - host: ketopal-identity.nebbiatech.com
 
-  tls: []
+  tls: 
    - secretName: ketopal-identity-certificate
      hosts:
        - ketopal-identity.nebbiatech.com
