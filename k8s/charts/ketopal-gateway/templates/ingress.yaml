@@ -26,7 +26,14 @@ spec:
       secretName: {{ .secretName }}
   {{- end }}
 {{- end }}
-  backend:
-    serviceName: {{ $fullName }}
-    servicePort: 80 
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+        {{- range .paths }}
+          - path: {{ . }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: 80
 {{- end }}
