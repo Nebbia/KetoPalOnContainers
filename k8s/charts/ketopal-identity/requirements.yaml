@@ -1,0 +1,4 @@
+dependencies:
+    -   name: keystore-data
+        repository: https://nebbiaregistry.azurecr.io/helm/v1/repo
+        version: '*'
