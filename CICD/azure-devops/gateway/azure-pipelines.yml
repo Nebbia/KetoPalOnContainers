@@ -106,7 +106,7 @@ stages:
       acrName: $(ACR.RepositoryName)
       chartName: $(Chart.Name)
       deployment: 'deployEastUS'
-      deploymentDisplayName: 'Deploy Identity East US'
+      deploymentDisplayName: 'Deploy Gateway East US'
       releaseName: $(Release.Name)
       pool: 'ubuntu-16.04'
       env: prod.ketopal
