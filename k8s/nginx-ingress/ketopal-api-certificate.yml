@@ -1,10 +1,10 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: ketopal-api-tls
+  name: ketopal-api-certificate
   namespace: ketopal
 spec:
-  secretName: ketopal-api-tls
+  secretName: ketopal-api-certificate
   dnsNames:
   - ketopal-api.nebbiatech.com
   acme:
@@ -15,4 +15,4 @@ spec:
       - ketopal-api.nebbiatech.com
   issuerRef:
     name: letsencrypt-prod
-    kind: ClusterIssuer
+    kind: Issuer
