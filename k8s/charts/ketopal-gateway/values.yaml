@@ -31,9 +31,9 @@ ingress:
   # hosts:
   #   - chart-example.local
   tls: []
-    # - secretName: chart-example-tls
-    #   hosts:
-    #     - chart-example.local
+    - secretName: chart-example-tls
+      hosts:
+        - chart-example.local
 secrets: {}
   # Optionally specify a set of secret objects whose values
   # will be injected as environment variables by default.

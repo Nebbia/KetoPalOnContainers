@@ -6,15 +6,13 @@ metadata:
 spec:
   secretName: ketopal-api-tls
   dnsNames:
-  - ketopal-api.eastus.cloudapp.azure.com
-  - keto-api.nebbiatech.com
+  - ketopal-api.nebbiatech.com
   acme:
     config:
     - http01:
         ingressClass: nginx
       domains:
-      - ketopal-api.eastus.cloudapp.azure.com
-      - keto-api.nebbiatech.com
+      - ketopal-api.nebbiatech.com
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
