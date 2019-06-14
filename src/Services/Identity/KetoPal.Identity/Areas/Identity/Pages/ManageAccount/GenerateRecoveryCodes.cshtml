@@ -1,0 +1,30 @@
+﻿@page
+
+@inject LocService SharedLocalizer
+@using KetoPal.Identity.Resources
+@model GenerateRecoveryCodesModel
+@{
+    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("GENERATE_2FA_RECOVERY_CODES");
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>@SharedLocalizer.GetLocalizedHtmlString("GENERATE_2FA_RECOVERY_CODES_SAFE_PLACE")</strong>
+    </p>
+    <p>
+        @SharedLocalizer.GetLocalizedHtmlString("GENERATE_2FA_RECOVERY_CODES_INFO_LOSE")
+    </p>
+    <p>
+        @SharedLocalizer.GetLocalizedHtmlString("GENERATE_2FA_RECOVERY_CODES_TEXT")
+        <a asp-page="./ResetAuthenticator">@SharedLocalizer.GetLocalizedHtmlString("GENERATE_2FA_RECOVERY_CODES_TEXT_LINK")</a>
+    </p>
+</div>
+<div>
+    <form method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">@SharedLocalizer.GetLocalizedHtmlString("GENERATE_RECOVERY_CODES")</button>
+    </form>
+</div>

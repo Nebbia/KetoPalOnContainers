@@ -1,10 +1,13 @@
-﻿@{
-    ViewData["Title"] = "Confirm email";
+﻿@using KetoPal.Identity.Resources
+
+@inject LocService SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("CONFIRM_EMAIL");
 }
 
 <h1>@ViewData["Title"]</h1>
 <div>
     <p>
-        Thank you for confirming your email.
+        @SharedLocalizer.GetLocalizedHtmlString("CONFIRM_EMAIL_TEXT")
     </p>
 </div>

@@ -14,10 +14,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using KetoPal.Identity.Extentions;
+using KetoPal.Identity.Filters;
 using KetoPal.Identity.Models.Consent;
-using KetoPal.Identity.Models.ConsentViewModels;
 using KetoPal.Identity.Models.Device;
-using KetoPal.Identity.Models.DeviceViewModels;
+using KetoPal.Identity.ViewModels.Consent;
+using KetoPal.Identity.ViewModels.Device;
 
 namespace KetoPal.Identity.Controllers
 {
@@ -172,7 +173,7 @@ namespace KetoPal.Identity.Controllers
             return null;
         }
 
-        private DeviceAuthorizationViewModel CreateConsentViewModel(string userCode, DeviceAuthorizationInputModel model, Client client, Resources resources)
+        private DeviceAuthorizationViewModel CreateConsentViewModel(string userCode, DeviceAuthorizationInputModel model, Client client, IdentityServer4.Models.Resources resources)
         {
             var vm = new DeviceAuthorizationViewModel
             {

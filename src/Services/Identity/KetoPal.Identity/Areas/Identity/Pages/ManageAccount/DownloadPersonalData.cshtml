@@ -1,0 +1,15 @@
+﻿@page
+
+@inject LocService SharedLocalizer
+@using KetoPal.Identity.Resources
+@model DownloadPersonalDataModel
+@{
+    ViewData["Title"] = @SharedLocalizer.GetLocalizedHtmlString("DOWNLOAD_YOUR_DATA");
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h4>@ViewData["Title"]</h4>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
