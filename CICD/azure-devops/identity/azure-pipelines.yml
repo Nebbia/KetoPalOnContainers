@@ -64,6 +64,13 @@ stages:
         command: init
         arguments: '--client-only'
 
+    - task: AzureCLI@1
+      displayName: 'Connect to ACR Helm Repo'
+      inputs:
+        azureSubscription: $(Azure.ServiceConnectionId)
+        scriptLocation: inlineScript
+        inlineScript: 'az acr helm repo add -n $(ACR.RepositoryName)'
+
     - task: HelmDeploy@0
       displayName: 'Package Helm Charts'
       inputs:
