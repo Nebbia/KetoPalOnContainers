@@ -7,7 +7,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "ketopal-api",
+          "Host": "api",
           "Port": 80
         }
       ]
