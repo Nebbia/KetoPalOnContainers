@@ -28,7 +28,6 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts: 
     - host: ketopal-identity.eastus.cloudapp.azure.com
-      paths: []
     - host: ketopal-identity.nebbiatech.com
 
   tls: 
