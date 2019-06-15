@@ -1,5 +1,6 @@
 {{- $name := include "ketopal-identity.fullname" . -}}
 {{- $cfgname := printf "%s-%s" "cfg" $name -}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -58,6 +59,15 @@ spec:
           {{- range .Values.env.values }}
             - name: {{ .name }}
               value: {{ .value | quote }}
+          {{- end -}}
+          {{- end -}}
+          {{- if .Values.env.secrets -}}
+          {{- range .Values.env.secrets }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secret }}
+                  key: {{ .key }}
           {{- end -}}
           {{- end -}}
           {{- if .Values.env.configmap -}}

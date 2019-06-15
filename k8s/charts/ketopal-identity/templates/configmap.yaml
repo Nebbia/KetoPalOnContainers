@@ -11,3 +11,4 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
     all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
+    identity__keystore: {{ include "keystore-constr" . }}
