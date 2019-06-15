@@ -116,7 +116,7 @@ stages:
       deploymentDisplayName: 'Deploy Identity East US'
       releaseName: $(Release.Name)
       pool: 'ubuntu-16.04'
-      env: prod.ketopal
+      env: prod.ketopal-identity
       namespace: ketopal-identity
       helmOverrideValues: 'image.repository=$(ACR.ImageFullName),image.tag=$(Build.BuildNumber),buildID=$(Build.BuildId)'
       
