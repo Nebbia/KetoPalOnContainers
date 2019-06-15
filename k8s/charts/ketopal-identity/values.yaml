@@ -58,17 +58,35 @@ affinity: {}
 env:
   urls:
   configmap:
-    - name: ConnectionString
-      key: identity__ConnectionString
-    - name: DPConnectionString
-      key: identity__keystore
     - name: ApplicationInsights__InstrumentationKey
       key: all__InstrumentationKey
+    - name: DPConnectionString
+      key: identity__keystore
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
     - name: IsClusterEnv
       value: 'True'
+  secrets:
+    - name: ConnectionString
+      secret: identity-secrets
+      key: connectionString
+
+    - name: SendGridUser
+      secret: identity-secrets
+      key: SendGridUser
+    - name: SendGridKey
+      secret: identity-secrets
+      key: SendGridKey
+    - name: SMSAccountIdentification
+      secret: identity-secrets
+      key: SMSAccountIdentification
+    - name: SMSAccountPassword
+      secret: identity-secrets
+      key: SMSAccountPassword
+    - name: SMSAccountFrom
+      secret: identity-secrets
+      key: SMSAccountFrom
 
 inf:
   appinsights:
