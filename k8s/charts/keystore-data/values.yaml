@@ -33,4 +33,5 @@ affinity: {}
 
 inf:
   redis:
-    svc: keystore-data
+    keystore:
+      svc: keystore-data
