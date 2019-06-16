@@ -8,7 +8,8 @@
 
 {{- define "keystore-constr" -}}
 {{- if index .Values "keystore-data" "service" "name" -}}
-{{- printf "%s:6379" index .Values "keystore-data" "service" "name" -}}
+{{- $constr := index .Values "keystore-data" "service" "name" -}}}}
+{{- printf "%s:6379" $constr -}}
 {{- else -}}
 {{- .Values.inf.redis.keystore.constr -}}
 {{- end -}}
