@@ -328,4 +328,9 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
 k8s/ketopal-identity-secret.yml
+
+#Helm Ignores
+**/charts/*.tgz
+**/requirements.lock
