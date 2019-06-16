@@ -1,6 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $ingressPath := include "pathBase" . -}}
-{{- $fullName := include "ketopal-identity.fullname" . -}}
+{{- $fullName := template "ketopal-identity.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

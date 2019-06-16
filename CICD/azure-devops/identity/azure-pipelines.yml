@@ -24,7 +24,7 @@ variables:
   Service.Name: identity
   Image.Name: ketopal/identity
   Service.Dockerfile: src/Services/Identity/KetoPal.Identity/Dockerfile
-  Release.Name: ketopal-identity-v1
+  Release.Name: ketopal-identity
   # ========================================================================
   #                           Optional variables 
   # ========================================================================

@@ -10,9 +10,6 @@ image:
   repository: ketopal/identity
   tag: latest
 
-nameOverride: ""
-fullnameOverride: ""
-
 service:
   type: ClusterIP
   port: 80

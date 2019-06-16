@@ -4,25 +4,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ketopal-identity.fullname" . }}
+  name: {{ template "ketopal-identity.fullname" . }}
   labels:
     ufo: {{ $cfgname}}
-    app.kubernetes.io/name: {{ include "ketopal-identity.name" . }}
-    helm.sh/chart: {{ include "ketopal-identity.chart" . }}
+    app.kubernetes.io/name: {{ template "ketopal-identity.name" . }}
+    helm.sh/chart: {{ template "ketopal-identity.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "ketopal-identity.name" . }}
+      app.kubernetes.io/name: {{ template "ketopal-identity.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
-        app.kubernetes.io/name: {{ include "ketopal-identity.name" . }}
+        app.kubernetes.io/name: {{ template "ketopal-identity.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
