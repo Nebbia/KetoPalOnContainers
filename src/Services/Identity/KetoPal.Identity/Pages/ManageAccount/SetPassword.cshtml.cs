@@ -8,24 +8,20 @@ using KetoPal.Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
-namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
+namespace KetoPal.Identity.Pages.ManageAccount
 {
-    public class ChangePasswordModel : PageModel
+    public class SetPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILoginService<ApplicationUser> _signInManager;
-        private readonly ILogger<ChangePasswordModel> _logger;
 
-        public ChangePasswordModel(
+        public SetPasswordModel(
             UserManager<ApplicationUser> userManager,
-            ILoginService<ApplicationUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILoginService<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -36,11 +32,6 @@ namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
 
         public class InputModel
         {
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
-            public string OldPassword { get; set; }
-
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -62,9 +53,10 @@ namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
-            if (!hasPassword)
+
+            if (hasPassword)
             {
-                return RedirectToPage("./SetPassword");
+                return RedirectToPage("./ChangePassword");
             }
 
             return Page();
@@ -83,10 +75,10 @@ namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
-            if (!changePasswordResult.Succeeded)
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
+            if (!addPasswordResult.Succeeded)
             {
-                foreach (var error in changePasswordResult.Errors)
+                foreach (var error in addPasswordResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -94,8 +86,7 @@ namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = "Your password has been set.";
 
             return RedirectToPage();
         }

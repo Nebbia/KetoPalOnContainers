@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
+namespace KetoPal.Identity.Pages.ManageAccount
 {
     public class ShowRecoveryCodesModel : PageModel
     {
