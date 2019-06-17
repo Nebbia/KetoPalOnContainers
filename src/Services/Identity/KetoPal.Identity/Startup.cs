@@ -161,7 +161,10 @@ namespace KetoPal.Identity
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddSqlServer(Configuration["ConnectionString"],
                     name: "IdentityDB-check",
-                    tags: new string[] { "IdentityDB" });
+                    tags: new string[] {"IdentityDB"})
+                .AddRedis(Configuration["DPConnectionString"],
+                    name: "IdentityKeyStore-check",
+                    tags: new string[] {"IdentityKeyStore"});
 
             services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
             services.AddTransient<IRedirectService, RedirectService>();
