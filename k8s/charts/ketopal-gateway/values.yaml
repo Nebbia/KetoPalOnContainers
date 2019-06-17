@@ -28,8 +28,8 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-       - ketopal-api.nebbiatech.com
-       - ketopal-api.eastus.cloudapp.azure.com
+    - ketopal-api.nebbiatech.com
+    - ketopal-api.eastus.cloudapp.azure.com
   tls: {}
 secrets: {}
   # Optionally specify a set of secret objects whose values
