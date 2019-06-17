@@ -110,4 +110,4 @@ stages:
       pool: 'ubuntu-16.04'
       env: prod.ketopal
       namespace: ketopal
-      helmOverrideValues: 'image.repository=$(ACR.ImageFullName),image.tag=$(Build.BuildNumber),buildID=$(Build.BuildId),secrets.connectionStrings.foodDb="$(KetoPal-FoodDbConnectionString)"'
+      helmOverrideValues: 'image.repository=$(ACR.ImageFullName),image.tag=$(Build.BuildNumber),buildID=$(Build.BuildId)'

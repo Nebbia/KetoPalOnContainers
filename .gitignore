@@ -334,3 +334,4 @@ k8s/ketopal-identity-secret.yml
 #Helm Ignores
 **/charts/*.tgz
 **/requirements.lock
+k8s/api-connection-string.yml
