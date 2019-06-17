@@ -35,7 +35,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using KetoPal.Identity.Areas.Identity.Pages.ManageAccount;
+using KetoPal.Identity.Pages.ManageAccount;
 using KetoPal.Identity.Validations;
 
 namespace KetoPal.Identity
@@ -109,13 +109,8 @@ namespace KetoPal.Identity
                 {
                     var supportedCultures = new List<CultureInfo>
                     {
-                        new CultureInfo("en-US"),
-                        new CultureInfo("de-DE"),
-                        new CultureInfo("de-CH"),
-                        new CultureInfo("it-IT"),
-                        new CultureInfo("gsw-CH"),
-                        new CultureInfo("fr-FR"),
-                        new CultureInfo("zh-Hans")
+                        new CultureInfo("en-US")
+
                     };
 
                     options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
@@ -143,8 +138,7 @@ namespace KetoPal.Identity
                 })
                 .AddRazorPagesOptions(options =>
                 {
-                    options.AllowAreas = true;
-                    options.Conventions.AuthorizeAreaFolder("Identity", "/ManageAccount");
+                    options.Conventions.AuthorizeFolder("/ManageAccount");
                 })
                 .AddFluentValidation(fv =>
                 {

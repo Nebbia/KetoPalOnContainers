@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
+namespace KetoPal.Identity.Pages.ManageAccount
 {
     public static class ManageNavPages
     {

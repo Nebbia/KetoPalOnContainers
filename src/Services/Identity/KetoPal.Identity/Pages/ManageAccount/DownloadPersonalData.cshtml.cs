@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace KetoPal.Identity.Areas.Identity.Pages.ManageAccount
+namespace KetoPal.Identity.Pages.ManageAccount
 {
     public class DownloadPersonalDataModel : PageModel
     {
