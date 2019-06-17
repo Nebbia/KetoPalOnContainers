@@ -21,7 +21,7 @@ namespace KetoPal.Gateway
                         .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
                         .AddJsonFile("Ocelot.json", true, true)
                         .AddJsonFile($"Ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
-                        .AddEnvironmentVariables();
+                        .AddEnvironmentVariables(); 
                 })
                 .UseStartup<Startup>();
     }

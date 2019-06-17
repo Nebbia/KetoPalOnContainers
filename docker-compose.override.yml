@@ -17,6 +17,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - ConnectionString=${IDENTITY_DB:-Server=sql.data;Database=KetoPal.Identity.IdentityDb;User Id=sa;Password=Pass@word}
+      - DPConnectionString=keystore.data
     ports:
       - "5000:80"
 

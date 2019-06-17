@@ -23,6 +23,7 @@ services:
       dockerfile: src/Services/API/KetoPal.Api/Dockerfile
     depends_on:
       - api.data
+      - identity
 
   api.data:
     image: fgauna12/fooddb
