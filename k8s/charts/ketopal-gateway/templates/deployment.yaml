@@ -42,6 +42,8 @@ spec:
               port: http
           {{- end }}
           env:
+            - name: "ASPNETCORE_ENVIRONMENT"
+              value: "Production"
             {{- $root := . }}
             {{- range $ref, $values := .Values.secrets }}
             {{- range $key, $value := $values }}
