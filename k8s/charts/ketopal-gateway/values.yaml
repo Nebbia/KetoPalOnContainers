@@ -4,7 +4,7 @@
 fullnameOverride: ketopal-gateway
 replicaCount: 2
 image:
-  repository: ketopal/api
+  repository: ketopal/gateway
   tag: stable
   pullPolicy: IfNotPresent
 imagePullSecrets: []
