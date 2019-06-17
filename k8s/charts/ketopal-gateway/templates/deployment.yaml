@@ -31,15 +31,26 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          {{- if .Values.probes.enabled }}
+          {{ if .Values.probes -}}
+          {{- if .Values.probes.liveness -}}
           livenessProbe:
             httpGet:
-              path: /liveness
-              port: http
+              port: {{ .Values.probes.liveness.port }}
+              path: {{ .Values.probes.liveness.path }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+          {{- end -}}
+          {{- end -}}
+          {{- if .Values.probes -}}
+          {{- if .Values.probes.readiness }}
           readinessProbe:
             httpGet:
-              path: /hc
-              port: http
+              port: {{ .Values.probes.readiness.port }}
+              path: {{ .Values.probes.readiness.path }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
+          {{- end -}}
           {{- end }}
           env:
             - name: "ASPNETCORE_ENVIRONMENT"
