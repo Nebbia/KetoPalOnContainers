@@ -35,3 +35,4 @@ services:
       dockerfile: src/Gateways/KetoPal.Gateway/Dockerfile
     depends_on:
       - api
+

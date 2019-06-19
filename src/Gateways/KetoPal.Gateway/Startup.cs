@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Logging;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -31,6 +32,8 @@ namespace KetoPal.Gateway
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             services.AddOcelot();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -45,9 +48,9 @@ namespace KetoPal.Gateway
                     var idSvrOptions = new IdentityServerOptions();
                     Configuration.GetSection("Auth").Bind(idSvrOptions);
                     options.Authority = idSvrOptions.Authority;
+                    options.RequireHttpsMetadata = false;
                     options.ApiName = idSvrOptions.ApiName;
                     options.SupportedTokens = SupportedTokens.Both;
-                    options.ApiSecret = idSvrOptions.ApiSecret;
                 });
 
         }

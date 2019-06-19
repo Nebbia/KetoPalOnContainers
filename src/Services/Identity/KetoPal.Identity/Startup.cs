@@ -35,8 +35,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using IdentityServer4.Models;
 using KetoPal.Identity.Pages.ManageAccount;
 using KetoPal.Identity.Validations;
+using Secret = IdentityServer4.Models.Secret;
 
 namespace KetoPal.Identity
 {
@@ -145,7 +147,8 @@ namespace KetoPal.Identity
                     fv.ImplicitlyValidateChildProperties = true;
                 });
 
-            services.Configure<IISOptions>(options =>
+
+           services.Configure<IISOptions>(options =>
             {
                 options.AutomaticAuthentication = false;
                 options.AuthenticationDisplayName = "Windows";
@@ -180,6 +183,10 @@ namespace KetoPal.Identity
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseSuccessEvents = true;
                     options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+                    if (Environment.IsDevelopment())
+                    {
+                        options.IssuerUri = "http://localhost:5000";
+                    }
                 })
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(options =>

@@ -20,12 +20,17 @@ services:
       - DPConnectionString=keystore.data
     ports:
       - "5000:80"
+      - "44322:443"
+    env_file:
+      - secrets.env
 
   api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_HTTPS_PORT=44319
+      - Auth__Authority=http://identity
+      - Auth__Apiy=ketopal-gateway
     ports:
       - "45339:80"
       - "44319:443"

@@ -335,3 +335,4 @@ k8s/ketopal-identity-secret.yml
 **/charts/*.tgz
 **/requirements.lock
 k8s/api-connection-string.yml
+/secrets.env
