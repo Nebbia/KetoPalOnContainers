@@ -23,6 +23,10 @@ Right click on the `KetoPal.Identity` project and set the following local secret
 }
 ```
 
+Setting up Postman
+
+![](docs/images/PostmanSetup.png)
+
 
 
 
