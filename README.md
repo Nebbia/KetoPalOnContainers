@@ -17,7 +17,7 @@ Right click on the `KetoPal.Identity` project and set the following local secret
 {
   "SMSAccountPassword": "",
   "SMSAccountIdentification": "",
-  "SendGridUser": ",
+  "SendGridUser": "",
   "SendGridKey": "",
   "SMSAccountFrom": "+14074444444"
 }
