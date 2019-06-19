@@ -9,7 +9,19 @@ A sample microservices styles architecture hosted on Kubernetes with Identity Se
 ![](docs/images/KetoPalArchitecture.png)
 
 
+## Getting Started
 
+Right click on the `KetoPal.Identity` project and set the following local secrets
+
+``` json
+{
+  "SMSAccountPassword": "",
+  "SMSAccountIdentification": "",
+  "SendGridUser": ",
+  "SendGridKey": "",
+  "SMSAccountFrom": "+14074444444"
+}
+```
 
 
 
