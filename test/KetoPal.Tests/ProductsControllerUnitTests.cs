@@ -4,10 +4,12 @@ using FluentAssertions;
 using KetoPal.Api.Controllers;
 using KetoPal.Core;
 using KetoPal.Core.Models;
+using LaunchDarkly.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using User = KetoPal.Core.Models.User;
 
 namespace KetoPal.Tests
 {
@@ -23,7 +25,7 @@ namespace KetoPal.Tests
         {
             _productsProviderMock = new Mock<IProductsProvider>();
             _usersProviderMock = new Mock<IUsersProvider>();
-            _classUnderTest = new ProductsController(_productsProviderMock.Object, _usersProviderMock.Object);
+            _classUnderTest = new ProductsController(new LdClient("key"), _productsProviderMock.Object, _usersProviderMock.Object);
         }
 
         [TestMethod]

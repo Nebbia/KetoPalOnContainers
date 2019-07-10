@@ -4,11 +4,13 @@ using KetoPal.Api.Controllers;
 using KetoPal.Core;
 using KetoPal.Core.Models;
 using KetoPal.Infrastructure;
+using LaunchDarkly.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Language.Flow;
+using User = KetoPal.Core.Models.User;
 
 namespace KetoPal.SlowTests
 {
@@ -26,7 +28,7 @@ namespace KetoPal.SlowTests
         [TestMethod]
         public async Task ReturnsSomething()
         {
-            var productsController = new ProductsController(new ProductsProvider(_connectionString), new InMemoryUsersProvider());
+            var productsController = new ProductsController(new LdClient("key"), new ProductsProvider(_connectionString), new InMemoryUsersProvider());
 
             ActionResult<List<Product>> response = await productsController.Get(0);
 
@@ -38,7 +40,7 @@ namespace KetoPal.SlowTests
         [TestMethod]
         public async Task DataHasCarbContent()
         {
-            var productsController = new ProductsController(new ProductsProvider(_connectionString), new InMemoryUsersProvider());
+            var productsController = new ProductsController(new LdClient("key"), new ProductsProvider(_connectionString), new InMemoryUsersProvider());
 
             ActionResult<List<Product>> response = await productsController.Get(0);
 
@@ -51,7 +53,7 @@ namespace KetoPal.SlowTests
         [TestMethod]
         public async Task AllHaveManufaturer()
         {
-            var productsController = new ProductsController(new ProductsProvider(_connectionString), new InMemoryUsersProvider());
+            var productsController = new ProductsController(new LdClient("key"), new ProductsProvider(_connectionString), new InMemoryUsersProvider());
 
             ActionResult<List<Product>> response = await productsController.Get(0);
 
@@ -64,7 +66,7 @@ namespace KetoPal.SlowTests
         [TestMethod]
         public async Task WhenIProviderUserId_ItReturnsSomething()
         {
-            var productsController = new ProductsController(new ProductsProvider(_connectionString), new InMemoryUsersProvider());
+            var productsController = new ProductsController(new LdClient("key"), new ProductsProvider(_connectionString), new InMemoryUsersProvider());
 
             ActionResult<List<Product>> response = await productsController.Get(1);
 
@@ -77,7 +79,7 @@ namespace KetoPal.SlowTests
         [TestMethod]
         public async Task WhenIProvideUserId_ItFiltersTheResults()
         {
-            var productsController = new ProductsController(new ProductsProvider(_connectionString), new InMemoryUsersProvider());
+            var productsController = new ProductsController(new LdClient("key"), new ProductsProvider(_connectionString), new InMemoryUsersProvider());
 
             ActionResult<List<Product>> response0 = await productsController.Get(0);
             ActionResult<List<Product>> response1 = await productsController.Get(1);
@@ -105,7 +107,7 @@ namespace KetoPal.SlowTests
                 },
                 CarbConsumption = new List<CarbConsumption>()
             });
-            var productsController = new ProductsController(new ProductsProvider(_connectionString), usersProviderMock.Object);
+            var productsController = new ProductsController(new LdClient("key"), new ProductsProvider(_connectionString), usersProviderMock.Object);
 
             ActionResult<List<Product>> response = await productsController.Get(userId);
 
