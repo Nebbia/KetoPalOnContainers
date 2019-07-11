@@ -34,6 +34,9 @@ variables:
   ACR.ImageFullName: '$(ACR.FullName)/$(Image.Name)'
   System.Debug: 'false'
 
+  launchdarkly-account-name: nebbiademo
+  launchdarkly-project-name: KetoPalOnContainers
+
 stages:
 - stage: Build
   displayName: Build and Publish Stage
