@@ -49,6 +49,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "ketopalapi.fullname" . }}-connectionstrings
                   key: foodDb
+            - name: "LaunchDarklySdkKey"
+              valueFrom: 
+                secretKeyRef:
+                  name: ketopal-api-secrets
+                  key: LaunchDarklySdkKey
             {{- $root := . }}
             {{- range $ref, $values := .Values.secrets }}
             {{- range $key, $value := $values }}
